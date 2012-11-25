@@ -11,6 +11,8 @@
  */
 
 function Body(container, x, y, circleData) {
+  // Set true to draw circles for subbodies
+  var USING_VISUAL_STUBS = true
 
   // Initializes the Body and draws it
   // Arguments:
@@ -23,23 +25,40 @@ function Body(container, x, y, circleData) {
     this.x = x;
     this.y = y;
     this.subbodies = createSubbodies(circleData);
+    this.drawBody();
   }
 
-  // Creates subbodies from circle data
-  // Arguments:
-  // - circleData: An array of {x: _x_coord, y: _y_coord, radius: _radius}
-  // Returns:
-  // - An array of Subbody objects
-  this.createSubbodies = function(circleData) {
-    var subbodies = []
-    for (var i = 0; i < circleData.length; i++) {
-      var data = circleData[i];
-      subbodies.push(new Subbody(data.x, data.y, data.radius));
+  // Renders the subbodies in the body's container
+  // Works only if USING_VISUAL_STUBS is set to true
+  this.drawBody = function() {
+    if (USING_VISUAL_STUBS) {
+      for (var i = 0; i < this.subbodies.length; i++) {
+        var subbody = this.subbodies[i];
+        // var circle =  (new createjs.Shape()).graphics.f("green")
+        // circle.dc(subbody.x, subbody.y, subbody.radius);
+        console.log(subbody.x + " " + subbody.y + " " + subbody.radius);
+        this.stage.addChild(new createjs.Shape()).setTransform(0, 0).graphics.f("green").dc(subbody.x, subbody.y, subbody.radius);
+        // this.stage.addChild(circle);
+      }
     }
-    return subbodies;
   }
+
 
   this.initialize(container, x, y, circleData);
+}
+
+// Creates subbodies from circle data
+// Arguments:
+// - circleData: An array of {x: _x_coord, y: _y_coord, radius: _radius}
+// Returns:
+// - An array of Subbody objects
+function createSubbodies(circleData) {
+  var subbodies = []
+  for (var i = 0; i < circleData.length; i++) {
+    var data = circleData[i];
+    subbodies.push(new Subbody(data.x, data.y, data.radius));
+  }
+  return subbodies;
 }
 
 
@@ -64,7 +83,7 @@ function Subbody(x, y, radius) {
   // - tY: The Y coordinate to check
   // Returns:
   // - true if the subbody collides. false otherwise
-  this.checkCollision(tX, tY) {
+  this.checkCollision = function(tX, tY) {
     var dist = Math.sqrt(Math.pow(this.x - tX, 2) + Math.pow(this.y - tY, 2));
     return dist < this.radius;
   }

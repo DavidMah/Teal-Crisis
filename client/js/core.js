@@ -15,6 +15,7 @@ head.js("js/lib/jquery-1.8.3.min.js");
 
 // Modules
 head.js("js/player.js");
+head.js("js/zone.js");
 
 head.ready(function() {
 
@@ -25,11 +26,15 @@ head.ready(function() {
   // Establish the canvas as a global existence
   var stage  = new createjs.Stage(CANVAS_ID);
 
-  // Container addition must be in order of layers!
-  var playerContainer = stage.addChildAt(new createjs.Container());
+  // Container addition must be in order of layers from back to front!
+  var zoneContainer   = stage.addChild(new createjs.Container());
+  var zone = new Zone(zoneContainer);
+
+  var circleContainer = stage.addChild(new createjs.Container());
+
+  var playerContainer = stage.addChild(new createjs.Container());
   var player = new Player(playerContainer);
 
-  var circleContainer = stage.addChildAt(new createjs.Container());
 
   // Draws a r=50 circle at the given x, y coordinates
   // TODO: Remove this. It is for demo purposes
