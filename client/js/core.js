@@ -17,14 +17,19 @@ head.js("js/lib/jquery-1.8.3.min.js");
 head.js("js/player.js");
 
 head.ready(function() {
-  var FRAME_INTERVAL = 10;
-  var CANVAS_ID      = "gameCanvas"
 
+  var FRAME_INTERVAL = 10;
+  var CANVAS_ID      = "gameCanvas";
+
+  // TODO: Move all of this into a function
   // Establish the canvas as a global existence
   var stage  = new createjs.Stage(CANVAS_ID);
-  var circleContainer = stage.addChildAt(new createjs.Container(), 0);
-  var playerContainer = stage.addChildAt(new createjs.Container(), 1);
+
+  // Container addition must be in order of layers!
+  var playerContainer = stage.addChildAt(new createjs.Container());
   var player = new Player(playerContainer);
+
+  var circleContainer = stage.addChildAt(new createjs.Container());
 
   // Draws a r=50 circle at the given x, y coordinates
   // TODO: Remove this. It is for demo purposes

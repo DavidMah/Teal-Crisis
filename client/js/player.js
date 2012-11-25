@@ -7,11 +7,11 @@
  */
 
 function Player(container) {
-  var CROSSHAIR_RADIUS = 10
+  var CROSSHAIR_RADIUS = 10;
 
   // Create a crosshair Shape object
   function _drawCrosshair() {
-    var crosshair = (new createjs.Shape())
+    var crosshair = (new createjs.Shape());
     crosshair.graphics.beginStroke("blue");
     crosshair.graphics.drawCircle(0, 0, CROSSHAIR_RADIUS);
     crosshair.graphics.moveTo(-CROSSHAIR_RADIUS, 0).lineTo(CROSSHAIR_RADIUS, 0);
@@ -19,9 +19,10 @@ function Player(container) {
     return crosshair;
   }
 
-  this.focus = {x: 0, y: 0}
+  this.stage = container;
+  this.focus = {x: 0, y: 0};
   this.crosshair = _drawCrosshair();
-  container.addChildAt(this.crosshair, 0);
+  this.stage.addChildAt(this.crosshair);
 
 
   // Assign mouse focus information
@@ -30,7 +31,7 @@ function Player(container) {
     this.focus.y = y;
     this.crosshair.x = x;
     this.crosshair.y = y;
-  }
+  };
 
   // Determine what events to fire off based on current
   // state of the game
@@ -38,5 +39,5 @@ function Player(container) {
     jQuery(document).trigger(jQuery.Event("gunShot", {
       stageX: event.stageX,
       stageY: event.stageY}));
-  }
+  };
 }
