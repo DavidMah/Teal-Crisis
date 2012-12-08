@@ -19,8 +19,11 @@ head.js("js/zone.js");
 
 head.ready(function() {
 
-  var FRAME_INTERVAL = 10;
+  // In seconds, how often a frame runs
+  window.FRAME_INTERVAL = 0.05;
   var CANVAS_ID      = "gameCanvas";
+
+  var gameTime = 0;
 
   // TODO: Move all of this into a function
   // Establish the canvas as a global existence
@@ -34,12 +37,13 @@ head.ready(function() {
 
   var playerContainer = stage.addChild(new createjs.Container());
   var player = new Player(playerContainer);
+  player.setZone(zone);
 
 
   // Draws a r=50 circle at the given x, y coordinates
   // TODO: Remove this. It is for demo purposes
   function drawCircle(x, y) {
-    circleContainer.addChild(new createjs.Shape()).setTransform(0, 0).graphics.f("red").dc(x, y, 50);
+    circleContainer.addChild(new createjs.Shape()).setTransform(0, 0).graphics.f("red").dc(x, y, 10);
   }
 
   // TODO: Remove this. It is for demo purposes
@@ -58,5 +62,8 @@ head.ready(function() {
   // Visual Frame updates should happen at this time
   setInterval(function() {
     stage.update()
-  },FRAME_INTERVAL);
+    gameTime += FRAME_INTERVAL;
+    jQuery(zone).trigger("frame", {gameTime: gameTime});
+    jQuery(player).trigger("frame", {gameTime: gameTime});
+  },FRAME_INTERVAL * 1000);
 });

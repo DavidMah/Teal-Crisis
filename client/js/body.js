@@ -2,29 +2,61 @@
  *
  * This file represents one attacking enemy on the screen
  * A body is represented by a bunch of circles
- * A body should not worry about it's position within a zone.
- * The zone will handle such details.
  *
  * Vocabulary:
  * - stage: the canvas container to play graphics in
  * - subbody: a circle that represents a piece of the body
  */
 
-function Body(container, x, y, circleData) {
+function Body(container, x, y, bodyData) {
   // Set true to draw circles for subbodies
   var USING_VISUAL_STUBS = true
 
   // Initializes the Body and draws it
   // Arguments:
   // - container: An EaselJS container for the body to store its circles in
-  // - x: A x coordinate for the entirety of the body
-  // - y: A y coordinate for the entirety of the body
-  // - circleData: An array of {x: _x_coord, y: _y_coord, radius: _radius}
-  this.initialize = function(container, x, y, circleData) {
+  // - x: A x coordinate for the entirety of the body within the zone
+  // - y: A y coordinate for the entirety of the body within the zone
+  // - bodyData: an object of {health:_, x:_,y:_, states:[{subbodies...}..]}
+  this.initialize = function(container, x, y, bodyData) {
     this.stage = container;
     this.x = x;
     this.y = y;
-    this.subbodies = createSubbodies(circleData);
+    this.health = bodyData.health;
+    // TODO Will I use my own custom state machine?
+    this.states = generateStates(bodyData.states);
+
+    // set this.currentState, this.currentStateIndex,
+    // and this.remainingStateTime
+    this.setState(0);
+  }
+
+  // Every game frame, the body has a chance to change state
+  $(this).bind("frame", function(event) {
+    this.updateState();
+  });
+
+  // Update the remaining state time
+  // If remaining state time has run out, then move to the next state
+  this.updateState = function() {
+    this.remainingStateTime -= FRAME_INTERVAL;
+    if (this.remainingStateTime <= 0) {
+      this.setState(this.currentStateIndex + 1);
+    }
+  }
+
+  // Switch states of the body
+  // setting this.currentState, this.currentStateIndex,
+  // and this.remainingStateTime
+  // Also draws the body with the new state
+  // Arguments:
+  // - index: the index within this.states of the new state to switch to.
+  //          if index > states.length, uses index % this.states.length
+  this.setState = function(index) {
+    index = index % this.states.length;
+    this.currentStateIndex = index;
+    this.currentState = this.states[index];
+    this.remainingStateTime = this.currentState.time;
     this.drawBody();
   }
 
@@ -32,19 +64,47 @@ function Body(container, x, y, circleData) {
   // Works only if USING_VISUAL_STUBS is set to true
   this.drawBody = function() {
     if (USING_VISUAL_STUBS) {
-      for (var i = 0; i < this.subbodies.length; i++) {
-        var subbody = this.subbodies[i];
-        // var circle =  (new createjs.Shape()).graphics.f("green")
-        // circle.dc(subbody.x, subbody.y, subbody.radius);
-        console.log(subbody.x + " " + subbody.y + " " + subbody.radius);
-        this.stage.addChild(new createjs.Shape()).setTransform(0, 0).graphics.f("green").dc(subbody.x, subbody.y, subbody.radius);
-        // this.stage.addChild(circle);
+      this.stage.removeAllChildren();
+      var subbodies = this.currentState.subbodies;
+      for (var i = 0; i < subbodies.length; i++) {
+        var subbody = subbodies[i];
+        var shape = new createjs.Shape();
+        shape.setTransform(0, 0);
+        shape.graphics.beginFill("green");
+        shape.graphics.drawCircle(subbody.x, subbody.y, subbody.radius);
+        this.stage.addChild(shape);
       }
     }
   }
 
+  // Checks if the target X and Y collide with this body
+  // A collision does not include the outer border of the body.
+  //  Nobody ever dies from those!
+  // Arguments:
+  // - tX: The X coordinate to check
+  // - tY: The Y coordinate to check
+  // Returns:
+  // - true if the body collides. false otherwise
+  this.checkCollision = function(tX, tY) {
+    var subbodies = this.currentState.subbodies;
+    for (var i = 0; i < subbodies.length; i++) {
+      if (subbodies[i].checkCollision(tX, tY)) {
+        return true;
+      }
+    }
+    return false;
+  }
 
-  this.initialize(container, x, y, circleData);
+  // Logic that occurs upon being shot by a player
+  // Health reduces by one, and if health is 0, dies
+  // Returns:
+  // - true if dead, otherwise false
+  this.takeDamage = function() {
+    this.health -= 1;
+    return this.health == 0;
+  }
+
+  this.initialize(container, x, y, bodyData);
 }
 
 // Creates subbodies from circle data
@@ -61,6 +121,23 @@ function createSubbodies(circleData) {
   return subbodies;
 }
 
+// Generates state data for the body
+// Arguments:
+// - stateData: an array of [{subbodies:[{x:_,y:_,radius:_}, time:_},{..}]},{...},..]
+// Returns:
+// - An array of states
+function generateStates(stateData) {
+  var states = []
+  for (var i = 0; i < stateData.length; i++) {
+    var state = stateData[i];
+    var subbodies = createSubbodies(state.subbodies);
+    states.push({
+      subbodies: subbodies,
+      time: state.time
+    });
+  }
+  return states;
+}
 
 function Subbody(x, y, radius) {
 
@@ -75,8 +152,8 @@ function Subbody(x, y, radius) {
     this.radius = radius;
   }
 
-  // Checks if the target X and Y collide with his body
-  // A collision does not include the outer border of the body.
+  // Checks if the target X and Y collide with this subbody
+  // A collision does not include the outer border of the subbody.
   //  Nobody ever dies from those!
   // Arguments:
   // - tX: The X coordinate to check
