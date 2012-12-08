@@ -34,12 +34,13 @@ head.ready(function() {
 
   var playerContainer = stage.addChild(new createjs.Container());
   var player = new Player(playerContainer);
+  player.setZone(zone);
 
 
   // Draws a r=50 circle at the given x, y coordinates
   // TODO: Remove this. It is for demo purposes
   function drawCircle(x, y) {
-    circleContainer.addChild(new createjs.Shape()).setTransform(0, 0).graphics.f("red").dc(x, y, 50);
+    circleContainer.addChild(new createjs.Shape()).setTransform(0, 0).graphics.f("red").dc(x, y, 10);
   }
 
   // TODO: Remove this. It is for demo purposes

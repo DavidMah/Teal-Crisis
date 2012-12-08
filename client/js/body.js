@@ -2,28 +2,27 @@
  *
  * This file represents one attacking enemy on the screen
  * A body is represented by a bunch of circles
- * A body should not worry about it's position within a zone.
- * The zone will handle such details.
  *
  * Vocabulary:
  * - stage: the canvas container to play graphics in
  * - subbody: a circle that represents a piece of the body
  */
 
-function Body(container, x, y, circleData) {
+function Body(container, x, y, circleData, health) {
   // Set true to draw circles for subbodies
   var USING_VISUAL_STUBS = true
 
   // Initializes the Body and draws it
   // Arguments:
   // - container: An EaselJS container for the body to store its circles in
-  // - x: A x coordinate for the entirety of the body
-  // - y: A y coordinate for the entirety of the body
+  // - x: A x coordinate for the entirety of the body within the zone
+  // - y: A y coordinate for the entirety of the body within the zone
   // - circleData: An array of {x: _x_coord, y: _y_coord, radius: _radius}
-  this.initialize = function(container, x, y, circleData) {
+  this.initialize = function(container, x, y, circleData, health) {
     this.stage = container;
     this.x = x;
     this.y = y;
+    this.health = health;
     this.subbodies = createSubbodies(circleData);
     this.drawBody();
   }
@@ -34,17 +33,38 @@ function Body(container, x, y, circleData) {
     if (USING_VISUAL_STUBS) {
       for (var i = 0; i < this.subbodies.length; i++) {
         var subbody = this.subbodies[i];
-        // var circle =  (new createjs.Shape()).graphics.f("green")
-        // circle.dc(subbody.x, subbody.y, subbody.radius);
-        console.log(subbody.x + " " + subbody.y + " " + subbody.radius);
         this.stage.addChild(new createjs.Shape()).setTransform(0, 0).graphics.f("green").dc(subbody.x, subbody.y, subbody.radius);
-        // this.stage.addChild(circle);
       }
     }
   }
 
+  // Checks if the target X and Y collide with this body
+  // A collision does not include the outer border of the body.
+  //  Nobody ever dies from those!
+  // Arguments:
+  // - tX: The X coordinate to check
+  // - tY: The Y coordinate to check
+  // Returns:
+  // - true if the body collides. false otherwise
+  this.checkCollision = function(tX, tY) {
+    for (var i = 0; i < this.subbodies.length; i++) {
+      if (this.subbodies[i].checkCollision(tX, tY)) {
+        return true;
+      }
+    }
+    return false;
+  }
 
-  this.initialize(container, x, y, circleData);
+  // Logic that occurs upon being shot by a player
+  // Health reduces by one, and if health is 0, dies
+  // Returns:
+  // - true if dead, otherwise false
+  this.takeDamage = function() {
+    this.health -= 1;
+    return this.health == 0;
+  }
+
+  this.initialize(container, x, y, circleData, health);
 }
 
 // Creates subbodies from circle data
@@ -75,8 +95,8 @@ function Subbody(x, y, radius) {
     this.radius = radius;
   }
 
-  // Checks if the target X and Y collide with his body
-  // A collision does not include the outer border of the body.
+  // Checks if the target X and Y collide with this subbody
+  // A collision does not include the outer border of the subbody.
   //  Nobody ever dies from those!
   // Arguments:
   // - tX: The X coordinate to check
