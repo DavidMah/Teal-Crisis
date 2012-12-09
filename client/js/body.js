@@ -47,7 +47,6 @@ function Body(container, x, y, circleData, health) {
   // Returns:
   // - true if the body collides. false otherwise
   this.checkCollision = function(tX, tY) {
-    console.log(tX + ", "  + tY);
     for (var i = 0; i < this.subbodies.length; i++) {
       if (this.subbodies[i].checkCollision(tX, tY)) {
         return true;
@@ -61,9 +60,7 @@ function Body(container, x, y, circleData, health) {
   // Returns:
   // - true if dead, otherwise false
   this.takeDamage = function() {
-    //TODO REMOVE console.log
     this.health -= 1;
-    console.log("health: " + this.health);
     return this.health == 0;
   }
 
