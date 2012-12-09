@@ -53,6 +53,7 @@ function Zone(container) {
       if (targetBody.checkCollision(tX - targetBody.x, tY - targetBody.y)) {
         if (targetBody.takeDamage()) {
           this.stage.removeChild(targetBody.stage);
+          this.bodies.splice(i, 1);
         }
         return;
       }
