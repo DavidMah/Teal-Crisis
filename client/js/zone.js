@@ -20,21 +20,54 @@ function Zone(container) {
     this.bodies = []
 
     // TODO: Get this from some source(JSON or something)
-    var example_data = [
-      {x: 40.0,  y: 20.0, radius: 10.0},
-      {x: 60.0,  y: 90.0, radius: 20.0},
-      {x: 80.0,  y: 30.0, radius: 30.0},
-      {x: 120.0, y: 20.0, radius: 40.0},
-      {x: 90.0,  y: 50.0, radius: 50.0},
+    var exampleData = [
+      {
+        health: 5,
+        x: 200,
+        y: 400,
+        states: [
+          {
+            subbodies: [
+              {x: 40.0,  y: 20.0, radius: 10.0},
+              {x: 60.0,  y: 90.0, radius: 20.0},
+              {x: 80.0,  y: 30.0, radius: 30.0},
+              {x: 120.0, y: 20.0, radius: 40.0},
+              {x: 90.0,  y: 50.0, radius: 50.0}
+            ],
+            time: 9999
+          }
+        ]
+      },
+      {
+        health: 5,
+        x: 400,
+        y: 400,
+        states: [
+          {
+            subbodies: [
+              {x: 40.0,  y: 20.0, radius: 10.0},
+              {x: 60.0,  y: 90.0, radius: 20.0},
+              {x: 80.0,  y: 30.0, radius: 30.0},
+              {x: 120.0, y: 20.0, radius: 40.0},
+              {x: 90.0,  y: 50.0, radius: 50.0}
+            ],
+            time: 9999
+          }
+        ]
+      }
     ]
 
-    var bodyContainer = this.stage.addChild(new createjs.Container());
-    bodyContainer.setTransform(300, 300);
-    this.bodies.push(new Body(bodyContainer, 300, 300, example_data, 3));
+    for (var i = 0; i < exampleData.length; i++) {
+      var body = exampleData[i];
+      this.createBody(body.x, body.y, body);
+    }
+  }
 
-    bodyContainer = this.stage.addChild(new createjs.Container());
-    bodyContainer.setTransform(400, 400);
-    this.bodies.push(new Body(bodyContainer, 400, 400, example_data, 4));
+  // Creates a body and adds it to the zone
+  this.createBody = function(x, y, subbodyData) {
+    var bodyContainer = this.stage.addChild(new createjs.Container());
+    bodyContainer.setTransform(x, y);
+    this.bodies.push(new Body(bodyContainer, x, y, subbodyData));
   }
 
   jQuery(this).on("gunShot", function(data) {
