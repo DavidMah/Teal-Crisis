@@ -12,6 +12,7 @@
 // Libraries
 head.js("js/lib/easeljs-0.5.0.min.js");
 head.js("js/lib/jquery-1.8.3.min.js");
+head.js("js/lib/state-machine.min.js");
 
 // Modules
 head.js("js/player.js");
