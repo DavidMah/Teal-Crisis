@@ -18,16 +18,21 @@
 head.js("js/lib/easeljs-0.5.0.min.js");
 head.js("js/lib/jquery-1.8.3.min.js");
 head.js("js/lib/state-machine.min.js");
+head.js("js/lib/md5.min.js");
 
 // Modules
 head.js("js/player.js");
 head.js("js/zone.js");
+head.js("js/utility.js");
 
 head.ready(function() {
 
   // In seconds, how often a frame runs
   window.FRAME_INTERVAL = 0.05;
-  var CANVAS_ID      = "gameCanvas";
+  window.DEBUG_MESSAGES_ENABLED = true
+
+  var CANVAS_ID  = "gameCanvas";
+  var SAFETY_KEY = 32; // Spacebar
 
   var gameTime = 0;
 
@@ -55,13 +60,13 @@ head.ready(function() {
 
   jQuery(window).keyup(function(event) {
     if (event.keyCode == 32) {
-      player.enterSafety();
+      player.leaveSafety();
     }
   });
 
   jQuery(window).keydown(function(event) {
     if (event.keyCode == 32) {
-      player.leaveSafety();
+      player.enterSafety();
     }
   });
 

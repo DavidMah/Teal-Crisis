@@ -18,13 +18,17 @@ function Body(container, x, y, bodyData) {
   // - x: A x coordinate for the entirety of the body within the zone
   // - y: A y coordinate for the entirety of the body within the zone
   // - bodyData: an object of {health:_, x:_,y:_, states:[{subbodies...}..]}
-  this.initialize = function(container, x, y, bodyData) {
+  // - id: a string or integer to identify the body. If not specified,
+  //       a random probabalistically unique value will be used.
+  this.initialize = function(container, x, y, bodyData, id) {
     this.stage = container;
     this.x = x;
     this.y = y;
     this.health = bodyData.health;
     // TODO Will I use my own custom state machine?
     this.states = generateStates(bodyData.states);
+
+    this.id = (typeof id !== 'undefined') ? id : md5(Math.random());
 
     // set this.currentState, this.currentStateIndex,
     // and this.remainingStateTime
@@ -101,6 +105,7 @@ function Body(container, x, y, bodyData) {
   // - true if dead, otherwise false
   this.takeDamage = function() {
     this.health -= 1;
+    debug_log(this.id + " health: " + this.health);
     return this.health == 0;
   }
 
