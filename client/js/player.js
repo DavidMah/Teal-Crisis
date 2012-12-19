@@ -16,11 +16,31 @@ function Player(container) {
     this.crosshair = drawCrosshair();
     this.stage.addChildAt(this.crosshair);
     this.currentZone = null;
+
   }
+
+  // Possible Player States:
+  // closed
+  // - Player is in some non gameplay screen
+  // open
+  // - Player is in a gameplay screen and can attack
+  // safe
+  // - Player is in a gameplay screen but hiding
+  this.states = StateMachine.create({
+    initial: 'closed',
+    events: [
+      { name: 'enterSafety', from: 'open', to: 'safe'},
+      { name: 'leaveSafety', from: 'safe', to: 'open'},
+
+      { name: 'beginround', from: 'closed', to: 'open'},
+      { name: 'close', from: ['open', 'safe'], to: 'closed'},
+    ]
+  });
 
   // Assign a new zone for the player's events to propagate through
   this.setZone = function(zone) {
     this.currentZone = zone;
+    this.states.beginround();
   }
 
   // Assign mouse focus information
@@ -34,23 +54,38 @@ function Player(container) {
   // Enter the Safety State
   // Does nothing if already in said state
   this.enterSafety = function() {
-    console.log("safe!");
+    if (this.states.is('open'))
+      this.states.enterSafety()
+  }
+
+  // Hide the player from pain and dissallow the player
+  // from attacking
+  this.states.onsafe = function(eventname, from, to) {
+    debug_log("player entered open state");
   }
 
   // Enter the Open State
   // Does nothing if already in said state
   this.leaveSafety = function() {
-    console.log("open!");
+    if (this.states.is('safe'))
+      this.states.leaveSafety()
+  }
+
+  // Open the player to pain and allow the player to attack
+  this.states.onopen = function(eventname, from, to) {
+    debug_log("player entered open state");
   }
 
 
   // Determine what events to fire off based on current
   // state of the game
   this.clickEvent = function(event) {
-    jQuery(this.currentZone).trigger(jQuery.Event("gunShot", {
-      stageX: event.stageX,
-      stageY: event.stageY
-    }));
+    if (this.states.is('open')) {
+      jQuery(this.currentZone).trigger(jQuery.Event("gunShot", {
+        stageX: event.stageX,
+        stageY: event.stageY
+      }));
+    }
   };
 
   this.initialize(container);
