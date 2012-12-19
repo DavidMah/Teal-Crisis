@@ -24,9 +24,39 @@ function Body(container, x, y, bodyData) {
     this.y = y;
     this.health = bodyData.health;
     // TODO Will I use my own custom state machine?
-    this.currentStateIndex = 0;
     this.states = generateStates(bodyData.states);
-    this.currentState = this.states[0];
+
+    // set this.currentState, this.currentStateIndex,
+    // and this.remainingStateTime
+    this.setState(0);
+  }
+
+  // Every game frame, the body has a chance to change state
+  $(this).bind("frame", function(event) {
+    this.updateState();
+  });
+
+  // Update the remaining state time
+  // If remaining state time has run out, then move to the next state
+  this.updateState = function() {
+    this.remainingStateTime -= FRAME_INTERVAL;
+    if (this.remainingStateTime <= 0) {
+      this.setState(this.currentStateIndex + 1);
+    }
+  }
+
+  // Switch states of the body
+  // setting this.currentState, this.currentStateIndex,
+  // and this.remainingStateTime
+  // Also draws the body with the new state
+  // Arguments:
+  // - index: the index within this.states of the new state to switch to.
+  //          if index > states.length, uses index % this.states.length
+  this.setState = function(index) {
+    index = index % this.states.length;
+    this.currentStateIndex = index;
+    this.currentState = this.states[index];
+    this.remainingStateTime = this.currentState.time;
     this.drawBody();
   }
 
@@ -34,10 +64,15 @@ function Body(container, x, y, bodyData) {
   // Works only if USING_VISUAL_STUBS is set to true
   this.drawBody = function() {
     if (USING_VISUAL_STUBS) {
+      this.stage.removeAllChildren();
       var subbodies = this.currentState.subbodies;
       for (var i = 0; i < subbodies.length; i++) {
         var subbody = subbodies[i];
-        this.stage.addChild(new createjs.Shape()).setTransform(0, 0).graphics.f("green").dc(subbody.x, subbody.y, subbody.radius);
+        var shape = new createjs.Shape();
+        shape.setTransform(0, 0);
+        shape.graphics.beginFill("green");
+        shape.graphics.drawCircle(subbody.x, subbody.y, subbody.radius);
+        this.stage.addChild(shape);
       }
     }
   }

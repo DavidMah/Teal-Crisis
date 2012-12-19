@@ -28,13 +28,23 @@ function Zone(container) {
         states: [
           {
             subbodies: [
+              {x: 60.0,  y: 90.0, radius: 50.0},
+              {x: 30.0,  y: 20.0, radius: 40.0},
+              {x: 70.0,  y: 40.0, radius: 30.0},
+              {x: 80.0,  y: 10.0, radius: 20.0},
+              {x: 30.0,  y: 50.0, radius: 10.0}
+            ],
+            time: 5
+          },
+          {
+            subbodies: [
               {x: 40.0,  y: 20.0, radius: 10.0},
               {x: 60.0,  y: 90.0, radius: 20.0},
               {x: 80.0,  y: 30.0, radius: 30.0},
               {x: 120.0, y: 20.0, radius: 40.0},
               {x: 90.0,  y: 50.0, radius: 50.0}
             ],
-            time: 9999
+            time: 2
           }
         ]
       },
@@ -70,8 +80,18 @@ function Zone(container) {
     this.bodies.push(new Body(bodyContainer, x, y, subbodyData));
   }
 
+  // When the player makes a gunShot, collision testing needs to be run
+  // on all of the remaining bodies in the zone
   jQuery(this).on("gunShot", function(data) {
     this.runAttackCollisions(data.stageX, data.stageY);
+  });
+
+  // On every frame entry, every body needs to update its state
+  jQuery(this).on("frame", function(data) {
+    // Re propogate the state update needs through events to be asyncronous
+    for (var i = 0; i < this.bodies.length; i++) {
+      jQuery(this.bodies[i]).trigger("frame", data);
+    }
   });
 
   // Checks if the target X and Y collides with any bodies in this zone
