@@ -6,8 +6,8 @@
  * - Player input handling
  */
 
+var CROSSHAIR_RADIUS = 10;
 function Player(container) {
-  var CROSSHAIR_RADIUS = 10;
 
   // Initializes a player
   this.initialize = function(container) {
@@ -18,14 +18,9 @@ function Player(container) {
     this.currentZone = null;
   }
 
-  // Create a crosshair Shape object
-  function drawCrosshair() {
-    var crosshair = (new createjs.Shape());
-    crosshair.graphics.beginStroke("blue");
-    crosshair.graphics.drawCircle(0, 0, CROSSHAIR_RADIUS);
-    crosshair.graphics.moveTo(-CROSSHAIR_RADIUS, 0).lineTo(CROSSHAIR_RADIUS, 0);
-    crosshair.graphics.moveTo(0, -CROSSHAIR_RADIUS).lineTo(0, CROSSHAIR_RADIUS);
-    return crosshair;
+  // Assign a new zone for the player's events to propagate through
+  this.setZone = function(zone) {
+    this.currentZone = zone;
   }
 
   // Assign mouse focus information
@@ -36,9 +31,18 @@ function Player(container) {
     this.crosshair.y = y;
   };
 
-  this.setZone = function(zone) {
-    this.currentZone = zone;
+  // Enter the Safety State
+  // Does nothing if already in said state
+  this.enterSafety = function() {
+    console.log("safe!");
   }
+
+  // Enter the Open State
+  // Does nothing if already in said state
+  this.leaveSafety = function() {
+    console.log("open!");
+  }
+
 
   // Determine what events to fire off based on current
   // state of the game
@@ -50,4 +54,14 @@ function Player(container) {
   };
 
   this.initialize(container);
+}
+
+// Create a crosshair Shape object
+function drawCrosshair() {
+  var crosshair = (new createjs.Shape());
+  crosshair.graphics.beginStroke("blue");
+  crosshair.graphics.drawCircle(0, 0, CROSSHAIR_RADIUS);
+  crosshair.graphics.moveTo(-CROSSHAIR_RADIUS, 0).lineTo(CROSSHAIR_RADIUS, 0);
+  crosshair.graphics.moveTo(0, -CROSSHAIR_RADIUS).lineTo(0, CROSSHAIR_RADIUS);
+  return crosshair;
 }
