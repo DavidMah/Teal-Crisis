@@ -10,14 +10,15 @@
 // Modules
 head.js("js/body.js");
 
-function Zone(container) {
+function Zone(container, player) {
 
   // Initializes a body and draws its bodies
   // Arguments:
   // - container
-  this.initialize = function(container) {
-    this.stage = container
-    this.bodies = []
+  this.initialize = function(container, player) {
+    this.stage  = container;
+    this.player = player;
+    this.bodies = [];
 
     // TODO: Get this from some source(JSON or something)
     var exampleData = [
@@ -81,9 +82,11 @@ function Zone(container) {
   }
 
   // When the player makes a gunShot, collision testing needs to be run
-  // on all of the remaining bodies in the zone
+  // on all of the remaining bodies in the zone.
+  // Awards a score increment to the player based on if a body was hit
   jQuery(this).on("gunShot", function(data) {
-    this.runAttackCollisions(data.stageX, data.stageY);
+    var award = this.runAttackCollisions(data.stageX, data.stageY);
+    jQuery(this.player).trigger(jQuery.Event("scoreAward", {award: award}));
   });
 
   // On every frame entry, every body needs to update its state
@@ -100,6 +103,9 @@ function Zone(container) {
   // Arguments:
   // - tX: The X coordinate to check
   // - tY: The Y coordinate to check
+  // Returns:
+  // - An integer that represents the worth of whatever was hit, meant to be
+  //   added to the player's score.
   this.runAttackCollisions = function(tX, tY) {
     for (var i = 0; i < this.bodies.length; i++) {
       targetBody = this.bodies[i];
@@ -107,11 +113,13 @@ function Zone(container) {
         if (targetBody.takeDamage()) {
           this.stage.removeChild(targetBody.stage);
           this.bodies.splice(i, 1);
+          return 420;
         }
-        return;
+        return 139;
       }
     }
+    return -10;
   }
 
-  this.initialize(container);
+  this.initialize(container, player);
 }

@@ -47,6 +47,13 @@ function Player(container) {
     this.states.beginround();
   }
 
+  // When point amount awarded, update score
+  jQuery(this).bind("scoreAward", function(event) {
+    console.log(event);
+    this.score += event.award;
+    this.setScoreVisual();
+  });
+
   // Assign mouse focus information
   this.setFocus = function(x, y) {
     this.focus.x = x;
@@ -102,15 +109,19 @@ function Player(container) {
     this.setAmmoVisual();
   }
 
+  // Restores ammo to maximum capacity
+  this.reload = function() {
+    this.ammo = 9;
+    this.setAmmoVisual();
+  }
+
   // Updates visual display for ammo
   this.setAmmoVisual = function() {
     this.display.ammo.text = "Hand Gun: " + this.ammo;
   }
 
-  // Restores ammo to maximum capacity
-  this.reload = function() {
-    this.ammo = 9;
-    this.setAmmoVisual();
+  this.setScoreVisual = function() {
+    this.display.score.text = "Score: " + this.score;
   }
 
   this.initialize(container);

@@ -41,12 +41,14 @@ head.ready(function() {
   var stage  = new createjs.Stage(CANVAS_ID);
 
   // Container addition must be in order of layers from back to front!
-  var zoneContainer   = stage.addChild(new createjs.Container());
-  var zone = new Zone(zoneContainer);
-
   var playerContainer = stage.addChild(new createjs.Container());
   var player = new Player(playerContainer);
+
+  var zoneContainer   = stage.addChildAt(new createjs.Container(), 0);
+  var zone = new Zone(zoneContainer, player);
   player.setZone(zone);
+
+
 
   // When the mouse is pressed, defer to the player for shooting in the zone
   stage.onMouseDown = function(event) {
