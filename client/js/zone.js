@@ -10,66 +10,21 @@
 // Modules
 head.js("js/body.js");
 
-function Zone(container, player) {
+function Zone(container, player, zoneData) {
 
   // Initializes a body and draws its bodies
   // Arguments:
   // - container
-  this.initialize = function(container, player) {
+  // - zoneData: game data for this zone and its constituent bodies
+  this.initialize = function(container, player, zoneData) {
     this.stage  = container;
     this.player = player;
     this.bodies = [];
 
-    // TODO: Get this from some source(JSON or something)
-    var exampleData = [
-      {
-        health: 5,
-        x: 200,
-        y: 400,
-        states: [
-          {
-            subbodies: [
-              {x: 60.0,  y: 90.0, radius: 50.0},
-              {x: 30.0,  y: 20.0, radius: 40.0},
-              {x: 70.0,  y: 40.0, radius: 30.0},
-              {x: 80.0,  y: 10.0, radius: 20.0},
-              {x: 30.0,  y: 50.0, radius: 10.0}
-            ],
-            time: 5
-          },
-          {
-            subbodies: [
-              {x: 40.0,  y: 20.0, radius: 10.0},
-              {x: 60.0,  y: 90.0, radius: 20.0},
-              {x: 80.0,  y: 30.0, radius: 30.0},
-              {x: 120.0, y: 20.0, radius: 40.0},
-              {x: 90.0,  y: 50.0, radius: 50.0}
-            ],
-            time: 2
-          }
-        ]
-      },
-      {
-        health: 5,
-        x: 400,
-        y: 400,
-        states: [
-          {
-            subbodies: [
-              {x: 40.0,  y: 20.0, radius: 10.0},
-              {x: 60.0,  y: 90.0, radius: 20.0},
-              {x: 80.0,  y: 30.0, radius: 30.0},
-              {x: 120.0, y: 20.0, radius: 40.0},
-              {x: 90.0,  y: 50.0, radius: 50.0}
-            ],
-            time: 9999
-          }
-        ]
-      }
-    ]
-
-    for (var i = 0; i < exampleData.length; i++) {
-      var body = exampleData[i];
+    console.log(zoneData);
+    var bodyData = zoneData.bodies
+    for (var i = 0; i < bodyData.length; i++) {
+      var body = bodyData[i];
       this.createBody(body.x, body.y, body);
     }
   }
@@ -121,5 +76,5 @@ function Zone(container, player) {
     return -10;
   }
 
-  this.initialize(container, player);
+  this.initialize(container, player, zoneData);
 }

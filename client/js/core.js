@@ -27,12 +27,70 @@ head.js("js/utility.js");
 
 head.ready(function() {
 
+  // Constants
+
   // In seconds, how often a frame runs
   window.FRAME_INTERVAL = 0.05;
   window.DEBUG_MESSAGES_ENABLED = true
 
   var CANVAS_ID  = "gameCanvas";
   var SAFETY_KEY = 32; // Spacebar
+
+  // TODO: Get this from some source(JSON or something)
+  var exampleData = [
+    {
+      time: 42,
+      bodies: [
+        {
+          health: 5,
+          x: 200,
+          y: 400,
+          states: [
+            {
+              subbodies: [
+                {x: 60.0,  y: 90.0, radius: 50.0},
+                {x: 30.0,  y: 20.0, radius: 40.0},
+                {x: 70.0,  y: 40.0, radius: 30.0},
+                {x: 80.0,  y: 10.0, radius: 20.0},
+                {x: 30.0,  y: 50.0, radius: 10.0}
+              ],
+              time: 5,
+              attackSequence: [6, 7]
+            },
+            {
+              subbodies: [
+                {x: 40.0,  y: 20.0, radius: 10.0},
+                {x: 60.0,  y: 90.0, radius: 20.0},
+                {x: 80.0,  y: 30.0, radius: 30.0},
+                {x: 120.0, y: 20.0, radius: 40.0},
+                {x: 90.0,  y: 50.0, radius: 50.0}
+              ],
+              time: 2,
+              attackSequence: null
+            }
+          ]
+        },
+        {
+          health: 5,
+          x: 400,
+          y: 400,
+          states: [
+            {
+              subbodies: [
+                {x: 40.0,  y: 20.0, radius: 10.0},
+                {x: 60.0,  y: 90.0, radius: 20.0},
+                {x: 80.0,  y: 30.0, radius: 30.0},
+                {x: 120.0, y: 20.0, radius: 40.0},
+                {x: 90.0,  y: 50.0, radius: 50.0}
+              ],
+              time: 9999,
+              attackSequence: null
+            }
+          ]
+        }
+      ]
+    }
+  ]
 
   var gameTime = 0;
 
@@ -45,10 +103,8 @@ head.ready(function() {
   var player = new Player(playerContainer);
 
   var zoneContainer   = stage.addChildAt(new createjs.Container(), 0);
-  var zone = new Zone(zoneContainer, player);
+  var zone = new Zone(zoneContainer, player, exampleData[0]);
   player.setZone(zone);
-
-
 
   // When the mouse is pressed, defer to the player for shooting in the zone
   stage.onMouseDown = function(event) {
