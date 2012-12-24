@@ -124,6 +124,10 @@ function Player(container) {
     this.display.score.text = "Score: " + this.score;
   }
 
+  this.setTimeVisual = function(time) {
+    this.display.time.text = "Time: " + (time).toFixed(2);
+  }
+
   this.initialize(container);
 }
 

@@ -20,6 +20,7 @@ function Zone(container, player, zoneData) {
     this.stage  = container;
     this.player = player;
     this.bodies = [];
+    this.remainingTime = zoneData.time;
 
     console.log(zoneData);
     var bodyData = zoneData.bodies
@@ -47,10 +48,14 @@ function Zone(container, player, zoneData) {
   // On every frame entry, every body needs to update its state
   jQuery(this).on("frame", function(data) {
     // Re propogate the state update needs through events to be asyncronous
-    for (var i = 0; i < this.bodies.length; i++) {
-      jQuery(this.bodies[i]).trigger("frame", data);
-    }
+    jQuery(this.bodies).trigger("frame", data);
+    this.updateTime();
   });
+
+  this.updateTime = function() {
+    this.remainingTime -= FRAME_INTERVAL;
+    this.player.setTimeVisual(this.remainingTime);
+  }
 
   // Checks if the target X and Y collides with any bodies in this zone
   // If the target does collide, then trigger damage taking for the
