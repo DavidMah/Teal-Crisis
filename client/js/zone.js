@@ -20,6 +20,7 @@ function Zone(container, player, zoneData) {
     this.stage  = container;
     this.player = player;
     this.bodies = [];
+    this.initialTime   = zoneData.time;
     this.remainingTime = zoneData.time;
 
     if (zoneData.image !== undefined) {
@@ -27,18 +28,49 @@ function Zone(container, player, zoneData) {
       this.stage.addChild(image);
     }
 
-    var bodyData = zoneData.bodies
+    this.setBodyTable(zoneData.bodies);
+  }
+
+  // Establish body information, so that bodies will appear in the zone
+  // at their given entryTime
+  // sets this.inactiveBodies = [<latest body>, ..., <earliest body>]
+  // Arguments:
+  // - bodyData: a list of bodies meant to exist in the zone
+  this.setBodyTable = function(bodyData) {
+    this.inactiveBodies = [];
     for (var i = 0; i < bodyData.length; i++) {
       var body = bodyData[i];
-      this.createBody(body.x, body.y, body);
+      this.inactiveBodies.push(this.createBody(body.x, body.y, body));
+    }
+    this.inactiveBodies.sort(function(a, b) {
+      return b.entryTime - a.entryTime;
+    });
+    debug_log(this.inactiveBodies);
+    this.moveActiveBodies();
+  }
+
+  // Enters bodies into the zone who's entry times have passed
+  this.moveActiveBodies = function() {
+    var currentTime = this.initialTime - this.remainingTime;
+    while (this.inactiveBodies.length > 0
+           && this.inactiveBodies[this.inactiveBodies.length - 1].entryTime <= currentTime) {
+      var body = this.inactiveBodies.pop();
+      this.bodies.push(body);
+      this.stage.addChild(body.stage);
     }
   }
 
-  // Creates a body and adds it to the zone
+  // Creates a body
+  // Arguments:
+  // - x: the x coordinate within the zone to place the body
+  // - y: the y coordinate within the zone to place the body
+  // - subbodyData: data about the circles that compose the body. see body.js
+  // Returns:
+  // - a Body based on the given parameters
   this.createBody = function(x, y, subbodyData) {
-    var bodyContainer = this.stage.addChild(new createjs.Container());
+    var bodyContainer = new createjs.Container();
     bodyContainer.setTransform(x, y);
-    this.bodies.push(new Body(bodyContainer, player, x, y, subbodyData));
+    return new Body(bodyContainer, player, x, y, subbodyData);
   }
 
   // When the player makes a gunShot, collision testing needs to be run
@@ -54,6 +86,7 @@ function Zone(container, player, zoneData) {
     // Re propogate the state update needs through events to be asyncronous
     jQuery(this.bodies).trigger("frame", data);
     this.updateTime();
+    this.moveActiveBodies();
   });
 
   this.updateTime = function() {

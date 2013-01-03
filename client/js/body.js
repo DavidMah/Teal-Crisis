@@ -33,6 +33,7 @@ function Body(container, player, x, y, bodyData) {
     this.health = bodyData.health;
     this.states = generateStates(bodyData.states);
     this.player = player;
+    this.entryTime = bodyData.entryTime;
 
     this.id = (typeof id !== 'undefined') ? id : md5(Math.random());
 

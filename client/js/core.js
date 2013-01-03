@@ -46,6 +46,7 @@ head.ready(function() {
           health: 5,
           x: 200,
           y: 400,
+          entryTime: 0,
           states: [
             {
               subbodies: [
@@ -77,6 +78,7 @@ head.ready(function() {
           health: 5,
           x: 400,
           y: 400,
+          entryTime: 3,
           states: [
             {
               subbodies: [
