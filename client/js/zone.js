@@ -22,6 +22,11 @@ function Zone(container, player, zoneData) {
     this.bodies = [];
     this.remainingTime = zoneData.time;
 
+    if (zoneData.image !== undefined) {
+      var image = new createjs.Bitmap(zoneData.image);
+      this.stage.addChild(image);
+    }
+
     var bodyData = zoneData.bodies
     for (var i = 0; i < bodyData.length; i++) {
       var body = bodyData[i];

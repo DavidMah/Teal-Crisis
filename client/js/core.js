@@ -39,6 +39,7 @@ head.ready(function() {
   // TODO: Get this from some source(JSON or something)
   var exampleData = [
     {
+      image: "assets/images/tempbg.jpg",
       time: 42,
       bodies: [
         {
