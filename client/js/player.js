@@ -49,9 +49,15 @@ function Player(container) {
 
   // When point amount awarded, update score
   jQuery(this).bind("scoreAward", function(event) {
-    console.log(event);
+    console.log("scoreAward: " + event);
     this.score += event.award;
     this.setScoreVisual();
+  });
+
+  jQuery(this).bind("damage", function(event) {
+    console.log("damage: " + event);
+    this.health -= 1;
+    this.setHealthVisual();
   });
 
   // Assign mouse focus information
@@ -122,6 +128,10 @@ function Player(container) {
 
   this.setScoreVisual = function() {
     this.display.score.text = "Score: " + this.score;
+  }
+
+  this.setHealthVisual = function() {
+    this.display.health.text = "Life: " + this.health;
   }
 
   this.setTimeVisual = function(time) {

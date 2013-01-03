@@ -38,7 +38,7 @@ function Zone(container, player, zoneData) {
   this.createBody = function(x, y, subbodyData) {
     var bodyContainer = this.stage.addChild(new createjs.Container());
     bodyContainer.setTransform(x, y);
-    this.bodies.push(new Body(bodyContainer, x, y, subbodyData));
+    this.bodies.push(new Body(bodyContainer, player, x, y, subbodyData));
   }
 
   // When the player makes a gunShot, collision testing needs to be run

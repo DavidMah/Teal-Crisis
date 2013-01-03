@@ -57,7 +57,7 @@ head.ready(function() {
               ],
               time: 5,
               image: "assets/images/temp.jpg",
-              attackSequence: [6, 7]
+              attackSequence: [2, 4]
             },
             {
               subbodies: [

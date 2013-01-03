@@ -8,11 +8,11 @@
  * - subbody: a circle that represents a piece of the body
  */
 
-function Body(container, x, y, bodyData) {
+function Body(container, player, x, y, bodyData) {
   // Set true to draw circles for subbodies
   var USING_VISUAL_STUBS = true;
   var RECOIL_TIME = 0.5;
-  var MERCY_TIME = 0.5;
+  var MERCY_TIME = 0.3;
 
   // Initializes the Body and draws it
   // Arguments:
@@ -22,17 +22,21 @@ function Body(container, x, y, bodyData) {
   // - bodyData: an object of {health:_, x:_,y:_, states:[{subbodies...}..]}
   // - id: a string or integer to identify the body. If not specified,
   //       a random probabalistically unique value will be used.
-  this.initialize = function(container, x, y, bodyData, id) {
+  this.initialize = function(container, player, x, y, bodyData, id) {
     this.stage = container;
     this.x = x;
     this.y = y;
     this.health = bodyData.health;
     this.states = generateStates(bodyData.states);
+    this.player = player;
 
     this.id = (typeof id !== 'undefined') ? id : md5(Math.random());
 
     // If 0 or less, the body is attackable
     this.mercyTime = 0;
+
+    // If above 0, the body attacked RECOIL_TIME - this.recoilTime ago
+    this.recoilTime = 0;
 
     // set this.currentState, this.currentStateIndex,
     // and this.remainingStateTime
@@ -44,6 +48,7 @@ function Body(container, x, y, bodyData) {
   $(this).bind("frame", function(event) {
     this.updateState();
     this.updateMercyTime();
+    this.updateAttackTime();
   });
 
   // Update the remaining state time
@@ -67,7 +72,27 @@ function Body(container, x, y, bodyData) {
     this.currentStateIndex = index;
     this.currentState = this.states[index];
     this.remainingStateTime = this.currentState.time;
+
+    var state = this.currentState;
+    this.setAttack(0);
+
     this.drawBody();
+  }
+
+  // Switch attack state
+  // setting this.currentAttackIndex and this.remainingAttackTime
+  // Arguments
+  // - index: the index within this.currentState.attackSequence.
+  //          if index > this.currentState.attackSequence, uses index %
+  //          this.currentState.attackSequence.length
+  this.setAttack = function(index) {
+    if (this.currentState.attackSequence !== null) {
+      index = index % this.currentState.attackSequence.length;
+      this.currentAttackIndex = index;
+      this.remainingAttackTime = this.currentState.attackSequence[index];
+    } else {
+      this.remainingAttackTime = null;
+    }
   }
 
   // Renders the subbodies in the body's container
@@ -101,6 +126,24 @@ function Body(container, x, y, bodyData) {
     this.stage.alpha = Math.min(1 - (this.mercyTime / MERCY_TIME), 1);
   }
 
+  // Update the countdown before next attack
+  // If it is below 0, then attack and move to the next timer
+  this.updateAttackTime = function() {
+    if (this.remainingAttackTime !== null) {
+      this.remainingAttackTime -= FRAME_INTERVAL;
+      if (this.remainingAttackTime <= 0) {
+        this.setAttack(this.currentAttackIndex + 1);
+        this.attack();
+      }
+    }
+  }
+
+  this.attack = function() {
+    this.recoilTime = RECOIL_TIME;
+    console.log(this.id + " attacked.");
+    jQuery(this.player).trigger("damage", {bodyId: this.id});
+  }
+
   // Checks if the target X and Y collide with this body
   // A collision does not include the outer border of the body.
   //  Nobody ever dies from those!
@@ -132,7 +175,7 @@ function Body(container, x, y, bodyData) {
     return this.health == 0;
   }
 
-  this.initialize(container, x, y, bodyData);
+  this.initialize(container, player, x, y, bodyData);
 }
 
 // Creates subbodies from circle data
@@ -165,7 +208,8 @@ function generateStates(stateData) {
     states.push({
       subbodies: subbodies,
       time: state.time,
-      image: image
+      image: image,
+      attackSequence: state.attackSequence
     });
   }
   return states;
