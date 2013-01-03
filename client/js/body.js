@@ -11,8 +11,12 @@
 function Body(container, player, x, y, bodyData) {
   // Set true to draw circles for subbodies
   var USING_VISUAL_STUBS = true;
+  // Length of Animation time upon attacking
   var RECOIL_TIME = 0.5;
+  // Time between damage taking
   var MERCY_TIME = 0.3;
+  // Chance that an attack actually deals damage
+  var DAMAGE_CHANCE = 0.1;
 
   // Initializes the Body and draws it
   // Arguments:
@@ -140,8 +144,12 @@ function Body(container, player, x, y, bodyData) {
 
   this.attack = function() {
     this.recoilTime = RECOIL_TIME;
-    console.log(this.id + " attacked.");
-    jQuery(this.player).trigger("damage", {bodyId: this.id});
+    if (Math.random() < DAMAGE_CHANCE) {
+      debug_log(this.id + " attacked. Sending Signal");
+      jQuery(this.player).trigger("damage", {bodyId: this.id});
+    } else {
+      debug_log(this.id + " attacked. Missed");
+    }
   }
 
   // Checks if the target X and Y collide with this body

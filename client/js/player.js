@@ -49,15 +49,19 @@ function Player(container) {
 
   // When point amount awarded, update score
   jQuery(this).bind("scoreAward", function(event) {
-    console.log("scoreAward: " + event);
+    debug_log("scoreAward: " + event);
     this.score += event.award;
     this.setScoreVisual();
   });
 
   jQuery(this).bind("damage", function(event) {
-    console.log("damage: " + event);
-    this.health -= 1;
-    this.setHealthVisual();
+    if (this.states.is('open')) {
+      debug_log("damage: " + event);
+      this.health -= 1;
+      this.setHealthVisual();
+    } else {
+      debug_log("miss");
+    }
   });
 
   // Assign mouse focus information
@@ -80,7 +84,7 @@ function Player(container) {
   // Hide the player from pain and dissallow the player
   // from attacking
   this.states.onsafe = function(eventname, from, to) {
-    debug_log("player entered open state");
+    debug_log("player entered safety state");
   }
 
   // Enter the Open State
