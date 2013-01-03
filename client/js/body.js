@@ -10,7 +10,9 @@
 
 function Body(container, x, y, bodyData) {
   // Set true to draw circles for subbodies
-  var USING_VISUAL_STUBS = true
+  var USING_VISUAL_STUBS = true;
+  var RECOIL_TIME = 0.5;
+  var MERCY_TIME = 0.5;
 
   // Initializes the Body and draws it
   // Arguments:
@@ -29,6 +31,9 @@ function Body(container, x, y, bodyData) {
 
     this.id = (typeof id !== 'undefined') ? id : md5(Math.random());
 
+    // If 0 or less, the body is attackable
+    this.mercyTime = 0;
+
     // set this.currentState, this.currentStateIndex,
     // and this.remainingStateTime
     this.setState(0);
@@ -38,6 +43,7 @@ function Body(container, x, y, bodyData) {
   // Every game frame, the body has a chance to change state
   $(this).bind("frame", function(event) {
     this.updateState();
+    this.updateMercyTime();
   });
 
   // Update the remaining state time
@@ -84,6 +90,17 @@ function Body(container, x, y, bodyData) {
     }
   }
 
+  // Visually distorts the body in reaction to having taken damage
+  this.flashDamageTaken = function() {
+    this.mercyTime = MERCY_TIME;
+  }
+
+  // Update the remaining damage time along with any visual effects associated with damage
+  this.updateMercyTime = function() {
+    this.mercyTime -= FRAME_INTERVAL;
+    this.stage.alpha = Math.min(1 - (this.mercyTime / MERCY_TIME), 1);
+  }
+
   // Checks if the target X and Y collide with this body
   // A collision does not include the outer border of the body.
   //  Nobody ever dies from those!
@@ -107,8 +124,11 @@ function Body(container, x, y, bodyData) {
   // Returns:
   // - true if dead, otherwise false
   this.takeDamage = function() {
-    this.health -= 1;
-    debug_log(this.id + " health: " + this.health);
+    if (this.mercyTime <= 0) {
+      this.health -= 1;
+      this.flashDamageTaken();
+      debug_log(this.id + "took damage. health: " + this.health);
+    }
     return this.health == 0;
   }
 
