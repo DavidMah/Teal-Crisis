@@ -25,7 +25,6 @@ function Body(container, x, y, bodyData) {
     this.x = x;
     this.y = y;
     this.health = bodyData.health;
-    // TODO Will I use my own custom state machine?
     this.states = generateStates(bodyData.states);
 
     this.id = (typeof id !== 'undefined') ? id : md5(Math.random());
@@ -33,6 +32,7 @@ function Body(container, x, y, bodyData) {
     // set this.currentState, this.currentStateIndex,
     // and this.remainingStateTime
     this.setState(0);
+
   }
 
   // Every game frame, the body has a chance to change state
@@ -67,8 +67,11 @@ function Body(container, x, y, bodyData) {
   // Renders the subbodies in the body's container
   // Works only if USING_VISUAL_STUBS is set to true
   this.drawBody = function() {
+    this.stage.removeAllChildren();
+
+    if (this.currentState.image !== 'null')
+      this.stage.addChild(this.currentState.image);
     if (USING_VISUAL_STUBS) {
-      this.stage.removeAllChildren();
       var subbodies = this.currentState.subbodies;
       for (var i = 0; i < subbodies.length; i++) {
         var subbody = subbodies[i];
@@ -136,9 +139,13 @@ function generateStates(stateData) {
   for (var i = 0; i < stateData.length; i++) {
     var state = stateData[i];
     var subbodies = createSubbodies(state.subbodies);
+    if (state.image !== undefined)
+      var image = new createjs.Bitmap(state.image);
+
     states.push({
       subbodies: subbodies,
-      time: state.time
+      time: state.time,
+      image: image
     });
   }
   return states;

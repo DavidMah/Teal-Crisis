@@ -55,6 +55,7 @@ head.ready(function() {
                 {x: 30.0,  y: 50.0, radius: 10.0}
               ],
               time: 5,
+              image: "assets/images/temp.jpg",
               attackSequence: [6, 7]
             },
             {
@@ -66,6 +67,7 @@ head.ready(function() {
                 {x: 90.0,  y: 50.0, radius: 50.0}
               ],
               time: 2,
+              image: "assets/images/temp2.jpg",
               attackSequence: null
             }
           ]

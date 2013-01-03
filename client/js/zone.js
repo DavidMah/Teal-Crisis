@@ -22,7 +22,6 @@ function Zone(container, player, zoneData) {
     this.bodies = [];
     this.remainingTime = zoneData.time;
 
-    console.log(zoneData);
     var bodyData = zoneData.bodies
     for (var i = 0; i < bodyData.length; i++) {
       var body = bodyData[i];
