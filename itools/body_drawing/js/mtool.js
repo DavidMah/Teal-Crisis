@@ -31,7 +31,7 @@ head.ready(function() {
   var currentBackgroundImage = imageList[currentBackgroundImageIndex];
 
   function setBackgroundImage(image_uri) {
-    setNextImageName();
+    setImageNames();
 
     background.removeAllChildren();
     var image = new createjs.Bitmap(image_uri);
@@ -43,7 +43,13 @@ head.ready(function() {
     setBackgroundImage(imageList[currentBackgroundImageIndex]);
   }
 
-  function setNextImageName() {
+  function setImageNames() {
+    if (currentBackgroundImageIndex < imageList.length) {
+      jQuery("#thisImage").text(imageList[currentBackgroundImageIndex]);
+    } else {
+      jQuery("#thisImage").text("NO IMAGE");
+    }
+
     if (currentBackgroundImageIndex < imageList.length - 1) {
       jQuery("#nextImage").text(imageList[currentBackgroundImageIndex + 1]);
     } else {
