@@ -22,8 +22,8 @@ head.js("js/lib/md5.min.js");
 
 // Modules
 head.js("js/player.js");
-head.js("js/zone.js");
 head.js("js/utility.js");
+head.js("js/zone_manager.js");
 
 head.ready(function() {
 
@@ -39,13 +39,70 @@ head.ready(function() {
   // TODO: Get this from some source(JSON or something)
   var exampleData = [
     {
-      image: "assets/images/tempbg.jpg",
-      time: 42,
+      image: "assets/images/zone1.jpg",
+      time: 2,
       bodies: [
         {
           health: 5,
           x: 200,
           y: 400,
+          entryTime: 0,
+          states: [
+            {
+              subbodies: [
+                {x: 60.0,  y: 90.0, radius: 50.0},
+                {x: 30.0,  y: 20.0, radius: 40.0},
+                {x: 70.0,  y: 40.0, radius: 30.0},
+                {x: 80.0,  y: 10.0, radius: 20.0},
+                {x: 30.0,  y: 50.0, radius: 10.0}
+              ],
+              time: 5,
+              image: "assets/images/temp.jpg",
+              attackSequence: [2, 4]
+            },
+            {
+              subbodies: [
+                {x: 40.0,  y: 20.0, radius: 10.0},
+                {x: 60.0,  y: 90.0, radius: 20.0},
+                {x: 80.0,  y: 30.0, radius: 30.0},
+                {x: 120.0, y: 20.0, radius: 40.0},
+                {x: 90.0,  y: 50.0, radius: 50.0}
+              ],
+              time: 2,
+              image: "assets/images/temp2.jpg",
+              attackSequence: null
+            }
+          ]
+        },
+        {
+          health: 5,
+          x: 400,
+          y: 400,
+          entryTime: 3,
+          states: [
+            {
+              subbodies: [
+                {x: 40.0,  y: 20.0, radius: 10.0},
+                {x: 60.0,  y: 90.0, radius: 20.0},
+                {x: 80.0,  y: 30.0, radius: 30.0},
+                {x: 120.0, y: 20.0, radius: 40.0},
+                {x: 90.0,  y: 50.0, radius: 50.0}
+              ],
+              time: 9999,
+              attackSequence: null
+            }
+          ]
+        }
+      ]
+    },
+    {
+      image: "assets/images/zone2.jpg",
+      time: 42,
+      bodies: [
+        {
+          health: 5,
+          x: 100,
+          y: 200,
           entryTime: 0,
           states: [
             {
@@ -107,9 +164,8 @@ head.ready(function() {
   var playerContainer = stage.addChild(new createjs.Container());
   var player = new Player(playerContainer);
 
-  var zoneContainer   = stage.addChildAt(new createjs.Container(), 0);
-  var zone = new Zone(zoneContainer, player, exampleData[0]);
-  player.setZone(zone);
+  var zoneManagerContainer   = stage.addChildAt(new createjs.Container(), 0);
+  var zoneManager = new ZoneManager(zoneManagerContainer, player, exampleData);
 
   // When the mouse is pressed, defer to the player for shooting in the zone
   stage.onMouseDown = function(event) {
@@ -139,7 +195,7 @@ head.ready(function() {
   setInterval(function() {
     stage.update()
     gameTime += FRAME_INTERVAL;
-    jQuery(zone).trigger("frame", {gameTime: gameTime});
+    jQuery(zoneManager).trigger("frame", {gameTime: gameTime});
     jQuery(player).trigger("frame", {gameTime: gameTime});
   },FRAME_INTERVAL * 1000);
 });

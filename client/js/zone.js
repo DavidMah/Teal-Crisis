@@ -10,18 +10,20 @@
 // Modules
 head.js("js/body.js");
 
-function Zone(container, player, zoneData) {
+function Zone(container, zoneManager, player, zoneData) {
 
   // Initializes a body and draws its bodies
   // Arguments:
   // - container
   // - zoneData: game data for this zone and its constituent bodies
-  this.initialize = function(container, player, zoneData) {
+  this.initialize = function(container, zoneManager, player, zoneData) {
     this.stage  = container;
     this.player = player;
     this.bodies = [];
+    debug_log(zoneData);
     this.initialTime   = zoneData.time;
     this.remainingTime = zoneData.time;
+    this.zoneManager = zoneManager;
 
     if (zoneData.image !== undefined) {
       var image = new createjs.Bitmap(zoneData.image);
@@ -92,6 +94,9 @@ function Zone(container, player, zoneData) {
   this.updateTime = function() {
     this.remainingTime -= FRAME_INTERVAL;
     this.player.setTimeVisual(this.remainingTime);
+    if(this.remainingTime <= 0) {
+      jQuery(this.zoneManager).trigger("zoneFinished", {});
+    }
   }
 
   // Checks if the target X and Y collides with any bodies in this zone
@@ -118,5 +123,5 @@ function Zone(container, player, zoneData) {
     return -10;
   }
 
-  this.initialize(container, player, zoneData);
+  this.initialize(container, zoneManager, player, zoneData);
 }
