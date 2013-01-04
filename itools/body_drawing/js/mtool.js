@@ -6,6 +6,7 @@
 
 head.js("js/lib/easeljs-0.5.0.min.js");
 head.js("js/lib/jquery-1.8.3.min.js");
+head.js("assets/information.js");
 
 head.ready(function() {
 
@@ -15,19 +16,39 @@ head.ready(function() {
     var shape = new createjs.Shape();
     shape.x = start_x;
     shape.y = start_y;
-    if (fill)
+    if (fill) {
       shape.graphics.beginFill(color);
-    else
+    } else {
       shape.graphics.beginStroke(color);
+    }
     shape.graphics.drawCircle(0, 0, radius);
     container.addChild(shape);
     return radius;
   }
 
+
+  var currentBackgroundImageIndex = 0;
+  var currentBackgroundImage = imageList[currentBackgroundImageIndex];
+
   function setBackgroundImage(image_uri) {
+    setNextImageName();
+
     background.removeAllChildren();
     var image = new createjs.Bitmap(image_uri);
     background.addChild(image);
+  }
+
+  function nextBackgroundImage() {
+    currentBackgroundImageIndex += 1;
+    setBackgroundImage(imageList[currentBackgroundImageIndex]);
+  }
+
+  function setNextImageName() {
+    if (currentBackgroundImageIndex < imageList.length - 1) {
+      jQuery("#nextImage").text(imageList[currentBackgroundImageIndex + 1]);
+    } else {
+      jQuery("#nextImage").text("NO IMAGE");
+    }
   }
 
   function outputBody(states) {
@@ -87,8 +108,6 @@ head.ready(function() {
 
 
 
-
-
   var stage      = new createjs.Stage("gameCanvas");
   // Circles that are part of the finished product
   var finished   = new createjs.Container();
@@ -96,7 +115,6 @@ head.ready(function() {
   var incomplete = new createjs.Container();
   var background = new createjs.Container();
 
-  var currentBackgroundImage = "assets/images/zone1.jpg";
   setBackgroundImage(currentBackgroundImage);
 
   stage.addChild(background);
@@ -142,6 +160,8 @@ head.ready(function() {
     if (event.keyCode == 32 || event.keyCode == 13) {
       addState(currentSubbodies, currentBackgroundImage);
       resetSubbodies();
+      nextBackgroundImage();
+      finished.removeAllChildren();
     }
     if (event.keyCode == 13) {
       outputBody(currentStates);
