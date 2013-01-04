@@ -6,10 +6,21 @@
     <script src="js/mtool.js"></script>
   </head>
   <body>
-    <div id="canvasWrapper">
-      <canvas id="gameCanvas" width="800" height="600">
-        alternate content
-      </canvas>
+    <div id="contentWrapper">
+      <div id="canvasWrapper">
+        <canvas id="gameCanvas" width="800" height="600">
+          alternate content
+        </canvas>
+      </div>
+      <div id="righthandWrapper">
+        <div id="instructions">
+          <p>Press <b>Space</b> for the next state</p>
+          <p>Press <b>Enter</b> for the next body</p>
+        </div>
+        <div id="outputWrapper">
+          <textarea id="output"># This is a body</textarea>
+        </div>
+      </div>
     </div>
   </body>
 </html>
