@@ -54,7 +54,7 @@ head.ready(function() {
       s.x = START_X;
       s.y = START_Y;
       s.graphics.beginStroke('blue');
-      s.graphics.drawCircle(0,0,RAD);
+      s.graphics.drawCircle(0, 0, RAD);
 
 		stage.addChild(s);
 		stage.update();
