@@ -11,11 +11,13 @@ head.js("assets/information.js");
 head.ready(function() {
 
   // Draws a circle to the container. returns the radius
-  function drawCircle(container, x, y, x2, y2, color, fill) {
-    var radius = Math.sqrt(Math.pow(x - x2, 2) + Math.pow(y - y2, 2));
+  function drawCircle(container, circle, color, fill) {
+    var radius = circle.radius;
+    var x = circle.x;
+    var y = circle.y;
     var shape = new createjs.Shape();
-    shape.x = start_x;
-    shape.y = start_y;
+    shape.x = x;
+    shape.y = y;
     if (fill) {
       shape.graphics.beginFill(color);
     } else {
@@ -59,7 +61,7 @@ head.ready(function() {
 
   function outputBody(states) {
     outputArea = jQuery("#output");
-    outputArea.text(outputArea.text() + "\n" + JSON.stringify(createNewBody(states)) + "\n");
+    outputArea.text(outputArea.text() + JSON.stringify(createNewBody(states)) + "\n");
   }
 
   // Creates a body from default using the given states
@@ -107,8 +109,8 @@ head.ready(function() {
     currentSubbodies = [];
   }
 
-  function addSubbody(x, y, r) {
-    currentSubbodies.push(createNewSubbody(x, y, r));
+  function addSubbody(subbody) {
+    currentSubbodies.push(subbody);
     console.log(currentSubbodies);
   }
 
@@ -134,6 +136,11 @@ head.ready(function() {
   // Does the user current have the mouse pressed to draw?
   var drawing = false;
 
+  function createNewCircle(x, y, x2, y2) {
+    var diameter = Math.sqrt(Math.pow(x - x2, 2) + Math.pow(y - y2, 2));
+    return createNewSubbody((x + x2) / 2, (y + y2) / 2, (diameter / 2));
+  }
+
   // User Controls
   stage.onMouseDown = function(event) {
     start_x = event.stageX;
@@ -146,8 +153,9 @@ head.ready(function() {
   stage.onMouseUp = function(event) { 
     incomplete.removeAllChildren();
 
-    var radius = drawCircle(finished, start_x, start_y, event.stageX, event.stageY, 'blue', true);
-    addSubbody(start_x, start_y, radius);
+    var circleData = createNewCircle(start_x, start_y, event.stageX, event.stageY);
+    var radius = drawCircle(finished, circleData, 'blue', true);
+    addSubbody(circleData);
 
     drawing = false;
   };
@@ -157,7 +165,8 @@ head.ready(function() {
     incomplete.removeAllChildren();
 
     if (drawing) {
-      drawCircle(incomplete, start_x, start_y, event.stageX, event.stageY, 'green', false);
+      var circleData = createNewCircle(start_x, start_y, event.stageX, event.stageY);
+      drawCircle(incomplete, circleData, 'green', false);
     }
   };
 
