@@ -4,6 +4,17 @@ var gameData = [
   },
   {
     type: "cinematic",
+    data: {
+      images: ["assets/images/zone1.jpg", "assets/images/zone2.jpg"],
+      frames: {width: 800, height: 600},
+      animations: {
+        play: {
+          frames: [0, 1],
+          next: "play",
+          frequency: 10
+        }
+      }
+    },
     time: 5
   },
   {

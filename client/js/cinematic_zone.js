@@ -13,6 +13,11 @@ function CinematicZone(container, zoneManager, player, cinematicData) {
 
     this.time = cinematicData.time;
     this.started = false;
+    this.data = cinematicData.data;
+
+    this.spritesheet = new createjs.SpriteSheet(this.data);
+    this.animation   = new createjs.BitmapAnimation(this.spritesheet);
+    this.stage.addChild(this.animation);
 
   };
 
@@ -22,12 +27,18 @@ function CinematicZone(container, zoneManager, player, cinematicData) {
     this.player.hideDisplay();
     this.player.states.close();
     this.started = true;
-  }
+
+    this.startAnimation();
+  };
 
   // Initializes anything necessary for exit from a zone
   // In CinematicZone's case, does nothing
   this.endZone = function() {
     this.player.states.close();
+  };
+
+  this.startAnimation = function() {
+    this.animation.gotoAndPlay("play");
   }
 
   jQuery(this).on("frame", function(data) {
