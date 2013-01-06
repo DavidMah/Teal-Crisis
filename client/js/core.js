@@ -39,6 +39,10 @@ head.ready(function() {
   // TODO: Get this from some source(JSON or something)
   var exampleData = [
     {
+      type: "opening"
+    },
+    {
+      type: "battle",
       image: "assets/images/zone1.jpg",
       time: 2,
       bodies: [
@@ -96,6 +100,7 @@ head.ready(function() {
       ]
     },
     {
+      type: "battle",
       image: "assets/images/zone2.jpg",
       time: 42,
       bodies: [

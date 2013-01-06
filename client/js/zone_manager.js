@@ -6,6 +6,7 @@
  */
 
 head.js("js/zone.js");
+head.js("js/opening_zone.js");
 
 function ZoneManager(container, player, zoneData) {
 
@@ -15,11 +16,38 @@ function ZoneManager(container, player, zoneData) {
   // - zoneData: game data for all game zones
   this.initialize = function(container, player, zoneData) {
     this.stage  = container;
-    this.zones  = zoneData;
+    this.zoneData  = zoneData;
     this.player = player;
 
     this.currentZoneIndex = 0;
+    this.loadZones();
     this.setZone(0);
+  }
+
+  // Preloads all zones from this.zoneData
+  this.loadZones = function() {
+    this.zones = []
+    for (var i = 0; i < this.zoneData.length; i++) {
+      this.zones.push(this.createZone(zoneData[i]));
+    }
+  }
+
+  // Creates a new zone object
+  // Returns
+  // - a new Zone object using this and the given zoneData
+  this.createZone = function(data) {
+    var zoneContainer = new createjs.Container();
+    // There are a few different types of zones
+    // - opening
+    // - battle
+    // - cinematic
+    if (data.type == 'battle') {
+      return new Zone(zoneContainer, this, this.player, data);
+    } else if (data.type == 'opening') {
+      return new OpeningZone(zoneContainer, this, this.player);
+    } else {
+      debug_log("Illegal Zone: " + data);
+    }
   }
 
   // Switch zones in the game, creating the new zone and abandoning the old
@@ -28,15 +56,13 @@ function ZoneManager(container, player, zoneData) {
   // - index: the index within this.zones of the new zone to switch to.
   //          if index > this.zones.length, uses index % this.zones.length
   this.setZone = function(index) {
-    debug_log("aya " + this.zones);
     index = index % this.zones.length;
     this.currentZoneIndex = index;
-    var zoneContainer = new createjs.Container();
-    this.currentZone = new Zone(zoneContainer, this, this.player, this.zones[index]);
+    this.currentZone = this.zones[index];
     this.player.setZone(this.currentZone);
 
     this.stage.removeAllChildren();
-    this.stage.addChild(zoneContainer);
+    this.stage.addChild(this.currentZone.stage);
   }
 
   // Switches to the next zone
