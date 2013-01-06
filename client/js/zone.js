@@ -31,6 +31,20 @@ function Zone(container, zoneManager, player, zoneData) {
     }
 
     this.setBodyTable(zoneData.bodies);
+  };
+
+  // Initializes anything necessary for entrance to a zone
+  // In Zone's case, asks the player to draw his display
+  this.startZone = function() {
+    this.player.showDisplay();
+    this.player.states.beginround();
+  };
+
+  // Initializes anything necessary for exit from a zone
+  // In Zone's case, asks the player to hide his display
+  this.endZone = function() {
+    this.player.hideDisplay();
+    this.player.states.close();
   }
 
   // Establish body information, so that bodies will appear in the zone

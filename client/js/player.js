@@ -14,13 +14,16 @@ function Player(container) {
     this.stage = container;
     this.focus = {x: 0, y: 0};
     this.crosshair = drawCrosshair();
-    this.stage.addChildAt(this.crosshair);
+    this.stage.addChild(this.crosshair);
     this.currentZone = null;
-    this.display   = createDisplay(container);
+    this.display   = createDisplay(new createjs.Container());
+    this.stage.addChild(this.display.container);
 
     this.score  = 0;
     this.ammo   = 9;
     this.health = 3;
+
+    this.hideDisplay();
   }
 
   // Possible Player States:
@@ -37,14 +40,13 @@ function Player(container) {
       { name: 'leaveSafety', from: 'safe', to: 'open'},
 
       { name: 'beginround', from: 'closed', to: 'open'},
-      { name: 'close', from: ['open', 'safe'], to: 'closed'},
+      { name: 'close', from: ['open', 'safe'], to: 'closed'}
     ]
   });
 
   // Assign a new zone for the player's events to propagate through
   this.setZone = function(zone) {
     this.currentZone = zone;
-    this.states.beginround();
   }
 
   // When point amount awarded, update score
@@ -117,30 +119,38 @@ function Player(container) {
   this.useAmmo = function() {
     this.ammo -= 1;
     this.setAmmoVisual();
-  }
+  };
 
   // Restores ammo to maximum capacity
   this.reload = function() {
     this.ammo = 9;
     this.setAmmoVisual();
+  };
+
+  this.showDisplay = function() {
+    this.display.container.visible = true;
+  };
+
+  this.hideDisplay = function() {
+    this.display.container.visible = false;
   }
 
   // Updates visual display for ammo
   this.setAmmoVisual = function() {
     this.display.ammo.text = "Hand Gun: " + this.ammo;
-  }
+  };
 
   this.setScoreVisual = function() {
     this.display.score.text = "Score: " + this.score;
-  }
+  };
 
   this.setHealthVisual = function() {
     this.display.health.text = "Life: " + this.health;
-  }
+  };
 
   this.setTimeVisual = function(time) {
     this.display.time.text = "Time: " + (time).toFixed(2);
-  }
+  };
 
   this.initialize(container);
 }
@@ -165,12 +175,13 @@ function createDisplay(display) {
   display.addChild(time);
 
   return {
+    container: display,
     score:  score,
     ammo:   ammo,
     health: health,
     time:   time
-  }
-}
+  };
+};
 
 // Create a crosshair Shape object
 function drawCrosshair() {
@@ -181,4 +192,4 @@ function drawCrosshair() {
   crosshair.graphics.moveTo(0, -CROSSHAIR_RADIUS).lineTo(0, CROSSHAIR_RADIUS);
   crosshair.graphics.moveTo(0, -CROSSHAIR_RADIUS).lineTo(0, CROSSHAIR_RADIUS);
   return crosshair;
-}
+};

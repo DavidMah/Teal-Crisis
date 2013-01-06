@@ -63,16 +63,17 @@ function ZoneManager(container, player, zoneData) {
 
     this.stage.removeAllChildren();
     this.stage.addChild(this.currentZone.stage);
+    this.currentZone.startZone();
   }
 
   // Switches to the next zone
   this.nextZone = function() {
-    this.player.states.close();
     this.setZone(this.currentZoneIndex + 1);
   }
 
   // When the zone is finished, move to the next zone
   jQuery(this).on("zoneFinished", function(data) {
+    this.currentZone.endZone();
     this.nextZone();
   });
 
