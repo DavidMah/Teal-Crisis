@@ -121,6 +121,9 @@ var gameData = [
         ]
       }
     ]
+  },
+  {
+    type: "closing"
   }
 ]
 
