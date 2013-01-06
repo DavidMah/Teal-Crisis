@@ -7,6 +7,7 @@
 
 head.js("js/zone.js");
 head.js("js/opening_zone.js");
+head.js("js/cinematic_zone.js");
 
 function ZoneManager(container, player, zoneData) {
 
@@ -45,6 +46,8 @@ function ZoneManager(container, player, zoneData) {
       return new Zone(zoneContainer, this, this.player, data);
     } else if (data.type == 'opening') {
       return new OpeningZone(zoneContainer, this, this.player);
+    } else if (data.type == "cinematic") {
+      return new CinematicZone(zoneContainer, this, this.player, data);
     } else {
       debug_log("Illegal Zone: " + data);
     }

@@ -40,7 +40,7 @@ function Player(container) {
       { name: 'leaveSafety', from: 'safe', to: 'open'},
 
       { name: 'beginround', from: 'closed', to: 'open'},
-      { name: 'close', from: ['open', 'safe'], to: 'closed'}
+      { name: 'close', from: ['closed','open', 'safe'], to: 'closed'}
     ]
   });
 

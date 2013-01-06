@@ -25,6 +25,9 @@ head.js("js/player.js");
 head.js("js/utility.js");
 head.js("js/zone_manager.js");
 
+// Data
+head.js("assets/game_data.js");
+
 head.ready(function() {
 
   // Constants
@@ -35,129 +38,6 @@ head.ready(function() {
 
   var CANVAS_ID  = "gameCanvas";
   var SAFETY_KEY = 32; // Spacebar
-
-  // TODO: Get this from some source(JSON or something)
-  var exampleData = [
-    {
-      type: "opening"
-    },
-    {
-      type: "battle",
-      image: "assets/images/zone1.jpg",
-      time: 2,
-      bodies: [
-        {
-          health: 5,
-          x: 200,
-          y: 400,
-          entryTime: 0,
-          states: [
-            {
-              subbodies: [
-                {x: 60.0,  y: 90.0, radius: 50.0},
-                {x: 30.0,  y: 20.0, radius: 40.0},
-                {x: 70.0,  y: 40.0, radius: 30.0},
-                {x: 80.0,  y: 10.0, radius: 20.0},
-                {x: 30.0,  y: 50.0, radius: 10.0}
-              ],
-              time: 5,
-              image: "assets/images/temp.jpg",
-              attackSequence: [2, 4]
-            },
-            {
-              subbodies: [
-                {x: 40.0,  y: 20.0, radius: 10.0},
-                {x: 60.0,  y: 90.0, radius: 20.0},
-                {x: 80.0,  y: 30.0, radius: 30.0},
-                {x: 120.0, y: 20.0, radius: 40.0},
-                {x: 90.0,  y: 50.0, radius: 50.0}
-              ],
-              time: 2,
-              image: "assets/images/temp2.jpg",
-              attackSequence: null
-            }
-          ]
-        },
-        {
-          health: 5,
-          x: 400,
-          y: 400,
-          entryTime: 3,
-          states: [
-            {
-              subbodies: [
-                {x: 40.0,  y: 20.0, radius: 10.0},
-                {x: 60.0,  y: 90.0, radius: 20.0},
-                {x: 80.0,  y: 30.0, radius: 30.0},
-                {x: 120.0, y: 20.0, radius: 40.0},
-                {x: 90.0,  y: 50.0, radius: 50.0}
-              ],
-              time: 9999,
-              attackSequence: null
-            }
-          ]
-        }
-      ]
-    },
-    {
-      type: "battle",
-      image: "assets/images/zone2.jpg",
-      time: 42,
-      bodies: [
-        {
-          health: 5,
-          x: 100,
-          y: 200,
-          entryTime: 0,
-          states: [
-            {
-              subbodies: [
-                {x: 60.0,  y: 90.0, radius: 50.0},
-                {x: 30.0,  y: 20.0, radius: 40.0},
-                {x: 70.0,  y: 40.0, radius: 30.0},
-                {x: 80.0,  y: 10.0, radius: 20.0},
-                {x: 30.0,  y: 50.0, radius: 10.0}
-              ],
-              time: 5,
-              image: "assets/images/temp.jpg",
-              attackSequence: [2, 4]
-            },
-            {
-              subbodies: [
-                {x: 40.0,  y: 20.0, radius: 10.0},
-                {x: 60.0,  y: 90.0, radius: 20.0},
-                {x: 80.0,  y: 30.0, radius: 30.0},
-                {x: 120.0, y: 20.0, radius: 40.0},
-                {x: 90.0,  y: 50.0, radius: 50.0}
-              ],
-              time: 2,
-              image: "assets/images/temp2.jpg",
-              attackSequence: null
-            }
-          ]
-        },
-        {
-          health: 5,
-          x: 400,
-          y: 400,
-          entryTime: 3,
-          states: [
-            {
-              subbodies: [
-                {x: 40.0,  y: 20.0, radius: 10.0},
-                {x: 60.0,  y: 90.0, radius: 20.0},
-                {x: 80.0,  y: 30.0, radius: 30.0},
-                {x: 120.0, y: 20.0, radius: 40.0},
-                {x: 90.0,  y: 50.0, radius: 50.0}
-              ],
-              time: 9999,
-              attackSequence: null
-            }
-          ]
-        }
-      ]
-    }
-  ]
 
   var gameTime = 0;
 
@@ -170,7 +50,7 @@ head.ready(function() {
   var player = new Player(playerContainer);
 
   var zoneManagerContainer   = stage.addChildAt(new createjs.Container(), 0);
-  var zoneManager = new ZoneManager(zoneManagerContainer, player, exampleData);
+  var zoneManager = new ZoneManager(zoneManagerContainer, player, gameData);
 
   // When the mouse is pressed, defer to the player for shooting in the zone
   stage.onMouseDown = function(event) {
