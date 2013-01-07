@@ -1,6 +1,9 @@
 var gameData = [
   {
-    type: "opening"
+    type: "wait",
+    text: "Example Opening Text\n\nShoot to Continue",
+    font: "20 pt Arial",
+    canProceed: true
   },
   {
     type: "cinematic",
@@ -130,7 +133,9 @@ var gameData = [
     ]
   },
   {
-    type: "closing"
+    type: "wait",
+    text: "End of Game.\n\nHappy Birthday Nick!",
+    font: "20 pt Arial"
   }
 ]
 

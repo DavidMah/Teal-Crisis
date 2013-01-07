@@ -6,9 +6,8 @@
  */
 
 head.js("js/zone.js");
-head.js("js/opening_zone.js");
 head.js("js/cinematic_zone.js");
-head.js("js/closing_zone.js");
+head.js("js/wait_zone.js");
 
 function ZoneManager(container, player, zoneData) {
 
@@ -40,18 +39,15 @@ function ZoneManager(container, player, zoneData) {
   this.createZone = function(data) {
     var zoneContainer = new createjs.Container();
     // There are a few different types of zones
-    // - opening -- the opening screen
+    // - wait    -- a screen with a visual that the player may be able to shoot through
     // - battle  -- a screen where the player fights
     // - cinematic -- a screen where the player watches
-    // - closing -- the closing screen
     if (data.type == 'battle') {
       return new Zone(zoneContainer, this, this.player, data);
-    } else if (data.type == 'opening') {
-      return new OpeningZone(zoneContainer, this, this.player);
+    } else if (data.type == 'wait') {
+      return new WaitZone(zoneContainer, this, this.player, data);
     } else if (data.type == "cinematic") {
       return new CinematicZone(zoneContainer, this, this.player, data);
-    } else if (data.type == "closing") {
-      return new ClosingZone(zoneContainer, this, this.player);
     } else {
       debug_log("Illegal Zone: " + data);
     }
