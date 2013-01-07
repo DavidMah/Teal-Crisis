@@ -19,6 +19,8 @@ head.js("js/lib/easeljs-0.5.0.min.js");
 head.js("js/lib/jquery-1.8.3.min.js");
 head.js("js/lib/state-machine.min.js");
 head.js("js/lib/md5.min.js");
+head.js("js/lib/soundjs-0.3.0.min.js");
+head.js("js/lib/preloadjs-0.2.0.min.js");
 
 // Modules
 head.js("js/player.js");

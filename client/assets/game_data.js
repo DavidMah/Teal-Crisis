@@ -5,14 +5,10 @@ var gameData = [
   {
     type: "cinematic",
     data: {
-      images: ["assets/images/zone1.jpg", "assets/images/zone2.jpg"],
-      frames: {width: 800, height: 600},
+      images: ['assets/images/cinematics/test/small-DSC_5883.JPG', 'assets/images/cinematics/test/small-DSC_5884.JPG', 'assets/images/cinematics/test/small-DSC_5885.JPG', 'assets/images/cinematics/test/small-DSC_5886.JPG', 'assets/images/cinematics/test/small-DSC_5887.JPG', 'assets/images/cinematics/test/small-DSC_5888.JPG', 'assets/images/cinematics/test/small-DSC_5889.JPG', 'assets/images/cinematics/test/small-DSC_5890.JPG', 'assets/images/cinematics/test/small-DSC_5891.JPG', 'assets/images/cinematics/test/small-DSC_5892.JPG', 'assets/images/cinematics/test/small-DSC_5893.JPG', 'assets/images/cinematics/test/small-DSC_5894.JPG', 'assets/images/cinematics/test/small-DSC_5895.JPG', 'assets/images/cinematics/test/small-DSC_5896.JPG', 'assets/images/cinematics/test/small-DSC_5897.JPG', 'assets/images/cinematics/test/small-DSC_5898.JPG', 'assets/images/cinematics/test/small-DSC_5899.JPG', 'assets/images/cinematics/test/small-DSC_5900.JPG', 'assets/images/cinematics/test/small-DSC_5901.JPG', 'assets/images/cinematics/test/small-DSC_5902.JPG', 'assets/images/cinematics/test/small-DSC_5903.JPG', 'assets/images/cinematics/test/small-DSC_5904.JPG', 'assets/images/cinematics/test/small-DSC_5905.JPG', 'assets/images/cinematics/test/small-DSC_5906.JPG', 'assets/images/cinematics/test/small-DSC_5907.JPG', 'assets/images/cinematics/test/small-DSC_5908.JPG', 'assets/images/cinematics/test/small-DSC_5909.JPG', 'assets/images/cinematics/test/small-DSC_5910.JPG'],
+      frames: {width: 800, height: 500},
       animations: {
-        play: {
-          frames: [0, 1],
-          next: "play",
-          frequency: 10
-        }
+        play: [0, 25, "play", 3]
       }
     },
     time: 5
@@ -20,7 +16,7 @@ var gameData = [
   {
     type: "battle",
     image: "assets/images/zone1.jpg",
-    time: 2,
+    time: 15,
     bodies: [
       {
         health: 5,
@@ -77,7 +73,7 @@ var gameData = [
   },
   {
     type: "battle",
-    image: "assets/images/zone2.jpg",
+    image: "assets/images/zone1.jpg",
     time: 42,
     bodies: [
       {
