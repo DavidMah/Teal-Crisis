@@ -64,6 +64,7 @@ function ZoneManager(container, player, zoneData) {
   //          if index > this.zones.length, uses index % this.zones.length
   this.setZone = function(index) {
     index = index % this.zones.length;
+    debug_log("switching to zone: " + index);
     this.currentZoneIndex = index;
     this.currentZone = this.zones[index];
     this.player.setZone(this.currentZone);

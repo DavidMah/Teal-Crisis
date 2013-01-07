@@ -19,6 +19,9 @@ function CinematicZone(container, zoneManager, player, cinematicData) {
     this.animation   = new createjs.BitmapAnimation(this.spritesheet);
     this.stage.addChild(this.animation);
 
+    var zone = this;
+    this.animation.onAnimationEnd = function() { zone.finishZone(zone) };
+
   };
 
   // Initializes anything necessary for entrance to a zone
@@ -34,11 +37,17 @@ function CinematicZone(container, zoneManager, player, cinematicData) {
   // Initializes anything necessary for exit from a zone
   // In CinematicZone's case, does nothing
   this.endZone = function() {
+    this.animation.stop();
     this.player.states.close();
   };
 
   this.startAnimation = function() {
     this.animation.gotoAndPlay("play");
+  };
+
+  this.finishZone = function(zone) {
+    console.log("zone manager " + zone.zoneManager);
+    jQuery(zone.zoneManager).trigger("zoneFinished", {});
   }
 
   jQuery(this).on("frame", function(data) {
