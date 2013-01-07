@@ -46,7 +46,6 @@ function CinematicZone(container, zoneManager, player, cinematicData) {
   };
 
   this.finishZone = function(zone) {
-    console.log("zone manager " + zone.zoneManager);
     jQuery(zone.zoneManager).trigger("zoneFinished", {});
   }
 

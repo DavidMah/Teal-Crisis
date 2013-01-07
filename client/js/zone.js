@@ -47,6 +47,10 @@ function Zone(container, zoneManager, player, zoneData) {
     this.player.states.close();
   }
 
+  this.getBodyCount = function() {
+    return this.bodies.length + this.inactiveBodies.length;
+  }
+
   // Establish body information, so that bodies will appear in the zone
   // at their given entryTime
   // sets this.inactiveBodies = [<latest body>, ..., <earliest body>]
@@ -113,6 +117,12 @@ function Zone(container, zoneManager, player, zoneData) {
     }
   }
 
+  this.endZoneIfNoMoreEnemies = function() {
+    if (this.getBodyCount() <= 0) {
+      jQuery(this.zoneManager).trigger("zoneFinished", {});
+    }
+  }
+
   // Checks if the target X and Y collides with any bodies in this zone
   // If the target does collide, then trigger damage taking for the
   // respective body
@@ -129,6 +139,7 @@ function Zone(container, zoneManager, player, zoneData) {
         if (targetBody.takeDamage()) {
           this.stage.removeChild(targetBody.stage);
           this.bodies.splice(i, 1);
+          this.endZoneIfNoMoreEnemies();
           return 420;
         }
         return 139;
