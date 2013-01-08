@@ -7,7 +7,9 @@
  */
 
 var CROSSHAIR_RADIUS = 10;
+var DEATH_TIME = 3;
 function Player(container) {
+  var player = this;
 
   // Initializes a player
   this.initialize = function(container) {
@@ -19,13 +21,21 @@ function Player(container) {
     this.display   = createDisplay(new createjs.Container());
     this.stage.addChild(this.display.container);
 
+    // Sets up initial player stats, like full health and 0 points
+    this.setDefaultValues();
+
+    this.deathTimer = 9999;
+    this.deathDisplay = createDeathDisplay(new createjs.Container());
+    this.stage.addChild(this.deathDisplay.container);
+
+    this.hideDisplay();
+  }
+
+  // Sets up initial player stats, like full health and 0 points
+  this.setDefaultValues = function() {
     this.score  = 0;
     this.ammo   = 9;
     this.health = 3;
-
-    this.deathTimer = 9999;
-
-    this.hideDisplay();
   }
 
   // Possible Player States:
@@ -42,6 +52,7 @@ function Player(container) {
       { name: 'leaveSafety', from: 'safe', to: 'open'},
 
       { name: 'die', from: 'open', to: 'dead'},
+      { name: 'rejoin', from: 'dead', to: 'open'},
 
       { name: 'beginround', from: 'closed', to: 'open'},
       { name: 'close', from: ['closed','open', 'safe', 'dead'], to: 'closed'}
@@ -117,6 +128,15 @@ function Player(container) {
     debug_log("player entered open state");
   }
 
+  this.states.ondie = function(eventname, from, to) {
+    player.deathDisplay.container.visible = true;
+  }
+
+  this.states.onleavedead = function(eventname, from, to) {
+    debug_log("player left dead state");
+    player.deathDisplay.container.visible = false;
+  }
+
   // Determine what events to fire off based on current
   // state of the game
   this.clickEvent = function(event) {
@@ -129,20 +149,28 @@ function Player(container) {
         }));
       }
     }
+    // Player shoots when dead. That means rejoin
+    if (this.states.is('dead')) {
+      this.setDefaultValues();
+      this.setVisuals();
+      this.states.rejoin();
+    }
   };
 
   // Changes state to dead. This state gives the player
-  // 3 seconds to choose to rejoin the game or else moves to
+  // DEATH_TIME seconds to choose to rejoin the game or else moves to
   // game over
   this.runDeathPane = function() {
     debug_log("death timer activated");
-    this.deathTimer = 3;
+    this.deathTimer = DEATH_TIME;
     this.states.die();
   };
 
   this.updateDeathTimer = function() {
     if (this.states.is('dead')) {
       this.deathTimer -= FRAME_INTERVAL;
+      this.deathDisplay.mask.alpha = Math.min((1 - (this.deathTimer / DEATH_TIME)) * 5, 0.5);
+      this.deathDisplay.countdown.text = (this.deathTimer).toFixed(2);
       if (this.deathTimer <= 0) {
         debug_log("player: Game Over");
         jQuery(this.zone_manager).trigger("gameOver", {});
@@ -168,6 +196,12 @@ function Player(container) {
 
   this.hideDisplay = function() {
     this.display.container.visible = false;
+  }
+
+  this.setVisuals = function() {
+    player.setAmmoVisual();
+    player.setScoreVisual();
+    player.setHealthVisual();
   }
 
   // Updates visual display for ammo
@@ -227,4 +261,30 @@ function drawCrosshair() {
   crosshair.graphics.moveTo(0, -CROSSHAIR_RADIUS).lineTo(0, CROSSHAIR_RADIUS);
   crosshair.graphics.moveTo(0, -CROSSHAIR_RADIUS).lineTo(0, CROSSHAIR_RADIUS);
   return crosshair;
+};
+
+function createDeathDisplay(container) {
+  var mask = new createjs.Shape();
+  mask.graphics.beginFill('black');
+  mask.graphics.drawRect(0, 0, 800, 600);
+  mask.alpha = 0;
+
+  var message   = (new createjs.Text("You Died! Shoot to rejoin", "20pt Arial"));
+  message.setTransform(200, 200);
+
+
+  var countdown = (new createjs.Text("---", "35pt Arial"));
+  countdown.setTransform(350, 300);
+
+  container.addChild(mask);
+  container.addChild(countdown);
+  container.addChild(message);
+
+  container.visible = false;
+  return {
+    container: container,
+    mask: mask,
+    message: message,
+    countdown: countdown
+  };
 };

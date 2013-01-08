@@ -115,6 +115,7 @@ function Body(container, player, x, y, bodyData) {
         shape.setTransform(0, 0);
         shape.graphics.beginFill("green");
         shape.graphics.drawCircle(subbody.x, subbody.y, subbody.radius);
+
         this.stage.addChild(shape);
       }
     }
