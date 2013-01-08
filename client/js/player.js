@@ -29,7 +29,7 @@ function Player(container) {
     this.stage.addChild(this.deathDisplay.container);
 
     this.hideDisplay();
-  }
+  };
 
   // Sets up initial player stats, like full health and 0 points
   this.setDefaultValues = function() {
@@ -143,9 +143,10 @@ function Player(container) {
     if (this.states.is('open')) {
       if(this.ammo > 0) {
         this.useAmmo();
+        var position = getGunShotPosition(event.stageX, event.stageY);
         jQuery(this.currentZone).trigger(jQuery.Event("gunShot", {
-          stageX: event.stageX,
-          stageY: event.stageY
+          stageX: position.x,
+          stageY: position.y
         }));
       }
     }
@@ -256,10 +257,7 @@ function createDisplay(display) {
 function drawCrosshair() {
   var crosshair = (new createjs.Shape());
   crosshair.graphics.beginStroke("blue");
-  crosshair.graphics.moveTo(-CROSSHAIR_RADIUS, 0).lineTo(-CROSSHAIR_RADIUS * 0.2, 0);
-  crosshair.graphics.moveTo(CROSSHAIR_RADIUS, 0).lineTo(CROSSHAIR_RADIUS * 0.2, 0);
-  crosshair.graphics.moveTo(0, -CROSSHAIR_RADIUS).lineTo(0, CROSSHAIR_RADIUS);
-  crosshair.graphics.moveTo(0, -CROSSHAIR_RADIUS).lineTo(0, CROSSHAIR_RADIUS);
+  crosshair.graphics.drawCircle(0, 0, CROSSHAIR_RADIUS);
   return crosshair;
 };
 
@@ -288,3 +286,14 @@ function createDeathDisplay(container) {
     countdown: countdown
   };
 };
+
+function getGunShotPosition(x, y) {
+  var angle  = Math.random() * 2 * Math.PI;
+  var radius = Math.random() * CROSSHAIR_RADIUS;
+  var offsetX = Math.sin(angle) * radius;
+  var offsetY = Math.cos(angle) * radius;
+  return {
+    x: x + offsetX,
+    y: y + offsetY
+  };
+}
