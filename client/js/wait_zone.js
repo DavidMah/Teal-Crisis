@@ -12,6 +12,12 @@ function WaitZone(container, zoneManager, player, zoneData) {
     this.zoneManager = zoneManager;
     this.player = player;
 
+    // White backdrop if there is no image
+    var backdrop = new createjs.Shape();
+    backdrop.graphics.beginFill('white')
+    backdrop.graphics.drawRect(0, 0, BACKGROUND_WIDTH, BACKGROUND_HEIGHT);
+    this.stage.addChild(backdrop);
+
     this.canProceed = zoneData.canProceed;
     this.addText(zoneData.text, zoneData.font);
   };

@@ -38,6 +38,13 @@ head.ready(function() {
   window.FRAME_INTERVAL = 0.05;
   window.DEBUG_MESSAGES_ENABLED = true
 
+  window.CANVAS_WIDTH = 800;
+  window.CANVAS_HEIGHT = 600;
+
+  // Size of images used for background (Determines framing)
+  window.BACKGROUND_WIDTH = 800;
+  window.BACKGROUND_HEIGHT = 536;
+
   var CANVAS_ID  = "gameCanvas";
   var SAFETY_KEY = 32; // Spacebar
 
@@ -45,7 +52,19 @@ head.ready(function() {
 
   // TODO: Move all of this into a function
   // Establish the canvas as a global existence
-  var stage  = new createjs.Stage(CANVAS_ID);
+  var canvas  = new createjs.Stage(CANVAS_ID);
+
+  // Black visual behind entire game
+  var backdrop = new createjs.Shape();
+  backdrop.graphics.beginFill('black')
+  backdrop.graphics.drawRect(0, 0, CANVAS_WIDTH, CANVAS_HEIGHT);
+  canvas.addChild(backdrop);
+
+  var stage  = new createjs.Container();
+  stage.setTransform(0, (CANVAS_HEIGHT - BACKGROUND_HEIGHT) / 2);
+  canvas.addChild(stage);
+
+
 
   // Container addition must be in order of layers from back to front!
   var playerContainer = stage.addChild(new createjs.Container());
@@ -57,12 +76,12 @@ head.ready(function() {
   player.setZoneManager(zoneManager);
 
   // When the mouse is pressed, defer to the player for shooting in the zone
-  stage.onMouseDown = function(event) {
+  canvas.onMouseDown = function(event) {
     player.clickEvent(event);
   }
 
   // When the mouse is moved, defer to the player for how to visualize focus
-  stage.onMouseMove = function(event) {
+  canvas.onMouseMove = function(event) {
     player.setFocus(event.stageX, event.stageY);
   }
 
@@ -82,7 +101,7 @@ head.ready(function() {
   // The frame event gets sent out throughout the application
   // which includes the current game time(time since page open)
   setInterval(function() {
-    stage.update();
+    canvas.update();
     gameTime += FRAME_INTERVAL;
     jQuery(zoneManager).trigger("frame", {gameTime: gameTime});
     jQuery(player).trigger("frame", {gameTime: gameTime});
