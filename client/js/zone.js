@@ -25,8 +25,12 @@ function Zone(container, zoneManager, player, zoneData) {
     this.remainingTime = zoneData.time;
     this.zoneManager = zoneManager;
 
-    var image = new createjs.Bitmap(zoneData.image);
-    this.stage.addChild(image);
+
+    this.entityContainer = new createjs.Container();
+    this.stage.addChild(this.entityContainer)
+
+    this.image = new createjs.Bitmap(zoneData.image);
+    this.entityContainer.addChild(this.image);
 
     if (zoneData.cover !== undefined) {
       this.cover = new createjs.Bitmap(zoneData.cover);
@@ -54,11 +58,13 @@ function Zone(container, zoneManager, player, zoneData) {
   // Visually changes the game field for player cover
   this.enterCover = function() {
     debug_log("enter cover");
+    // this.image.alpha = 0.5;
     this.cover.visible = true;
   }
 
   // Visually changes the game field for player uncover
   this.leaveCover = function() {
+    // this.image.alpha = 1;
     this.cover.visible = false;
   }
 
@@ -91,7 +97,7 @@ function Zone(container, zoneManager, player, zoneData) {
            && this.inactiveBodies[this.inactiveBodies.length - 1].entryTime <= currentTime) {
       var body = this.inactiveBodies.pop();
       this.bodies.push(body);
-      this.stage.addChild(body.stage);
+      this.entityContainer.addChild(body.stage);
     }
   }
 

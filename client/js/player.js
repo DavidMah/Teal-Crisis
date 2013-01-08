@@ -107,6 +107,7 @@ function Player(container) {
     if (this.states.is('open')) {
       this.states.enterSafety()
       this.reload();
+      this.crosshair.visible = false;
       jQuery(this.currentZone).trigger("enterCover", {});
     }
   }
@@ -122,6 +123,7 @@ function Player(container) {
   this.leaveSafety = function() {
     if (this.states.is('safe')) {
       this.states.leaveSafety()
+      this.crosshair.visible = true;
       jQuery(this.currentZone).trigger("leaveCover", {});
     }
   }
