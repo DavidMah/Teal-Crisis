@@ -107,6 +107,7 @@ function Player(container) {
     if (this.states.is('open')) {
       this.states.enterSafety()
       this.reload();
+      jQuery(this.currentZone).trigger("enterCover", {});
     }
   }
 
@@ -119,8 +120,10 @@ function Player(container) {
   // Enter the Open State
   // Does nothing if already in said state
   this.leaveSafety = function() {
-    if (this.states.is('safe'))
+    if (this.states.is('safe')) {
       this.states.leaveSafety()
+      jQuery(this.currentZone).trigger("leaveCover", {});
+    }
   }
 
   // Open the player to pain and allow the player to attack

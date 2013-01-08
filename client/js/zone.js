@@ -25,9 +25,13 @@ function Zone(container, zoneManager, player, zoneData) {
     this.remainingTime = zoneData.time;
     this.zoneManager = zoneManager;
 
-    if (zoneData.image !== undefined) {
-      var image = new createjs.Bitmap(zoneData.image);
-      this.stage.addChild(image);
+    var image = new createjs.Bitmap(zoneData.image);
+    this.stage.addChild(image);
+
+    if (zoneData.cover !== undefined) {
+      this.cover = new createjs.Bitmap(zoneData.cover);
+      this.stage.addChild(this.cover);
+      this.cover.visible = false;
     }
 
     this.setBodyTable(zoneData.bodies);
@@ -45,6 +49,17 @@ function Zone(container, zoneManager, player, zoneData) {
   this.endZone = function() {
     this.player.hideDisplay();
     this.player.states.close();
+  }
+
+  // Visually changes the game field for player cover
+  this.enterCover = function() {
+    debug_log("enter cover");
+    this.cover.visible = true;
+  }
+
+  // Visually changes the game field for player uncover
+  this.leaveCover = function() {
+    this.cover.visible = false;
   }
 
   this.getBodyCount = function() {
@@ -107,6 +122,17 @@ function Zone(container, zoneManager, player, zoneData) {
     jQuery(this.bodies).trigger("frame", data);
     this.updateTime();
     this.moveActiveBodies();
+  });
+
+  // When the player enters safety, switch to cover view
+  jQuery(this).on("enterCover", function(data) {
+    debug_log("enter cover");
+    this.enterCover();
+  });
+
+  // When the player enters open, switch to uncover view
+  jQuery(this).on("leaveCover", function(data) {
+    this.leaveCover();
   });
 
   this.updateTime = function() {
