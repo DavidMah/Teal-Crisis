@@ -81,6 +81,14 @@ function ZoneManager(container, player, zoneData) {
     this.nextZone();
   });
 
+  // If the gameOver announcement gets made, then just
+  // jump to the last zone (the game over zone)
+  jQuery(this).on("gameOver", function(data) {
+    debug_log("zone_manager: game over");
+    this.currentZone.endZone();
+    this.setZone(this.zones.length - 1);
+  });
+
   // On every frame entry, the zone needs to update its state
   jQuery(this).on("frame", function(data) {
     jQuery(this.currentZone).trigger("frame", data);

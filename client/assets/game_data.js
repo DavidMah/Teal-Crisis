@@ -132,9 +132,17 @@ var gameData = [
       }
     ]
   },
+  // The Normal Game Ending
   {
     type: "wait",
     text: "End of Game.\n\nHappy Birthday Nick!",
+    font: "20 pt Arial"
+  },
+  // The Game Over Screen -- Not normally accessible because the 
+  // Normal Game Ending has no way to proceed
+  {
+    type: "wait",
+    text: "Game Over.\n\nHappy Birthday Nick!",
     font: "20 pt Arial"
   }
 ]

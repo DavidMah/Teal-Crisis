@@ -23,6 +23,8 @@ function Player(container) {
     this.ammo   = 9;
     this.health = 3;
 
+    this.deathTimer = 9999;
+
     this.hideDisplay();
   }
 
@@ -39,14 +41,21 @@ function Player(container) {
       { name: 'enterSafety', from: 'open', to: 'safe'},
       { name: 'leaveSafety', from: 'safe', to: 'open'},
 
+      { name: 'die', from: 'open', to: 'dead'},
+
       { name: 'beginround', from: 'closed', to: 'open'},
-      { name: 'close', from: ['closed','open', 'safe'], to: 'closed'}
+      { name: 'close', from: ['closed','open', 'safe', 'dead'], to: 'closed'}
     ]
   });
 
   // Assign a new zone for the player's events to propagate through
   this.setZone = function(zone) {
     this.currentZone = zone;
+  };
+
+  // Hand the reference to the zone manager to the player
+  this.setZoneManager = function(zone_manager) {
+    this.zone_manager = zone_manager;
   }
 
   // When point amount awarded, update score
@@ -60,10 +69,17 @@ function Player(container) {
     if (this.states.is('open')) {
       debug_log("damage: " + event);
       this.health -= 1;
+      if (this.health <= 0) {
+        this.runDeathPane();
+      }
       this.setHealthVisual();
     } else {
       debug_log("miss");
     }
+  });
+
+  jQuery(this).on("frame", function(data) {
+    this.updateDeathTimer();
   });
 
   // Assign mouse focus information
@@ -111,6 +127,25 @@ function Player(container) {
           stageX: event.stageX,
           stageY: event.stageY
         }));
+      }
+    }
+  };
+
+  // Changes state to dead. This state gives the player
+  // 3 seconds to choose to rejoin the game or else moves to
+  // game over
+  this.runDeathPane = function() {
+    debug_log("death timer activated");
+    this.deathTimer = 3;
+    this.states.die();
+  };
+
+  this.updateDeathTimer = function() {
+    if (this.states.is('dead')) {
+      this.deathTimer -= FRAME_INTERVAL;
+      if (this.deathTimer <= 0) {
+        debug_log("player: Game Over");
+        jQuery(this.zone_manager).trigger("gameOver", {});
       }
     }
   };

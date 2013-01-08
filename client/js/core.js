@@ -54,6 +54,8 @@ head.ready(function() {
   var zoneManagerContainer   = stage.addChildAt(new createjs.Container(), 0);
   var zoneManager = new ZoneManager(zoneManagerContainer, player, gameData);
 
+  player.setZoneManager(zoneManager);
+
   // When the mouse is pressed, defer to the player for shooting in the zone
   stage.onMouseDown = function(event) {
     player.clickEvent(event);
@@ -80,7 +82,7 @@ head.ready(function() {
   // The frame event gets sent out throughout the application
   // which includes the current game time(time since page open)
   setInterval(function() {
-    stage.update()
+    stage.update();
     gameTime += FRAME_INTERVAL;
     jQuery(zoneManager).trigger("frame", {gameTime: gameTime});
     jQuery(player).trigger("frame", {gameTime: gameTime});

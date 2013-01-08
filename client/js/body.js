@@ -16,7 +16,7 @@ function Body(container, player, x, y, bodyData) {
   // Time between damage taking
   var MERCY_TIME = 0.3;
   // Chance that an attack actually deals damage
-  var DAMAGE_CHANCE = 0.1;
+  var DAMAGE_CHANCE = 0.9;
 
   // Initializes the Body and draws it
   // Arguments:
