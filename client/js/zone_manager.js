@@ -23,15 +23,15 @@ function ZoneManager(container, player, zoneData) {
     this.currentZoneIndex = 0;
     this.loadZones();
     this.setZone(0);
-  }
+  };
 
   // Preloads all zones from this.zoneData
   this.loadZones = function() {
-    this.zones = []
+    this.zones = [];
     for (var i = 0; i < this.zoneData.length; i++) {
       this.zones.push(this.createZone(zoneData[i]));
-    }
-  }
+    };
+  };
 
   // Creates a new zone object
   // Returns

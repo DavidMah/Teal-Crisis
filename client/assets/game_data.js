@@ -14,12 +14,20 @@ var gameData = [
         play: [0, 25, true, 3]
       }
     },
+    sounds: [
+      // { file: 'assets/sounds/eeuugh.ogg', time: 0.5, offset: ms, volume: 0 to 1},
+      { file: 'assets/sounds/eeuugh.ogg', time: 0.5, offset: 0},
+      { file: 'assets/sounds/eeuugh.ogg', time: 1}
+    ],
     time: 5
   },
   {
     type: "battle",
     image: "assets/images/zones/test/background.JPG",
     cover: "assets/images/zones/test/cover.png",
+    coverSide: 'right',
+    coverInitial: 400,
+
     time: 15,
     bodies: [
       {

@@ -11,13 +11,16 @@ function CinematicZone(container, zoneManager, player, cinematicData) {
     this.zoneManager = zoneManager;
     this.player = player;
 
-    this.time = cinematicData.time;
-    this.started = false;
-    this.data = cinematicData.data;
+    this.initialTime = cinematicData.time;
+    this.time        = cinematicData.time;
+    this.started     = false;
+    this.data        = cinematicData.data;
 
     this.spritesheet = new createjs.SpriteSheet(this.data);
     this.animation   = new createjs.BitmapAnimation(this.spritesheet);
     this.stage.addChild(this.animation);
+
+    this.sounds = this.prepareSounds(cinematicData.sounds);
 
     var zone = this;
     this.animation.onAnimationEnd = function() { zone.finishZone(zone) };
@@ -47,11 +50,47 @@ function CinematicZone(container, zoneManager, player, cinematicData) {
 
   this.finishZone = function(zone) {
     jQuery(zone.zoneManager).trigger("zoneFinished", {});
+  };
+
+  // Processes Sound Data in any way necessary at start of zone creation
+  this.prepareSounds = function(soundData) {
+    // TODO: preloading action
+    var manifest = []
+    for (var i = 0; i < soundData.length; i++) {
+      var sound = soundData[i];
+      manifest.push({
+        id: (i + ":" + sound.file),
+        src: sound.file,
+        data: 4
+      });
+    }
+
+    var preload = new createjs.PreloadJS();
+    preload.installPlugin(createjs.SoundJS);
+    preload.loadManifest(manifest);
+
+    soundData.reverse();
+    return soundData;
   }
+
+  this.playSounds = function() {
+    while (this.sounds.length > 0
+           && this.sounds[this.sounds.length - 1].time
+              <= (this.initialTime - this.time)) {
+      var sound  = this.sounds.pop();
+      var offset = (sound.offset !== undefined ? sound.offset : 0);
+      var volume = (sound.volume !== undefined ? sound.volume : 1);
+      createjs.SoundJS.play(sound.file, createjs.SoundJS.INTERRUPT_NONE,
+                            0, offset, 0, volume, 0);
+      // createjs.SoundJS.play(sound.file);
+    }
+
+  };
 
   jQuery(this).on("frame", function(data) {
     if (this.started) {
       this.time -= FRAME_INTERVAL;
+      this.playSounds();
       if (this.time <= 0) {
         jQuery(this.zoneManager).trigger("zoneFinished", {});
       }

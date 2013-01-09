@@ -27,10 +27,15 @@ function Zone(container, zoneManager, player, zoneData) {
 
 
     this.entityContainer = new createjs.Container();
-    this.stage.addChild(this.entityContainer)
+    this.stage.addChild(this.entityContainer);
 
+    // Cover
     this.image = new createjs.Bitmap(zoneData.image);
     this.entityContainer.addChild(this.image);
+    this.coverSide = zoneData.coverSide;
+    this.coverInitial = zoneData.coverInitial;
+    this.coverCoordinate = 0;
+    this.inCover = false;
 
     if (zoneData.cover !== undefined) {
       this.cover = new createjs.Bitmap(zoneData.cover);
@@ -53,24 +58,42 @@ function Zone(container, zoneManager, player, zoneData) {
   this.endZone = function() {
     this.player.hideDisplay();
     this.player.states.close();
-  }
+  };
 
   // Visually changes the game field for player cover
   this.enterCover = function() {
-    debug_log("enter cover");
     // this.image.alpha = 0.5;
     this.cover.visible = true;
-  }
+    this.inCover = true;
+  };
 
   // Visually changes the game field for player uncover
   this.leaveCover = function() {
     // this.image.alpha = 1;
     this.cover.visible = false;
-  }
+    this.inCover = false;
+  };
+
+  // Places the cover at the correct coordinates
+  // with respect to this.coverCoordinate and
+  // this.coverSide
+  this.updateCover = function() {
+    if (this.inCover) {
+      this.coverCoordinate = Math.max(0, this.coverCoordinate - (this.coverInitial / 10.0));
+    } else {
+      this.coverCoordinate = Math.min(this.coverInitial, this.coverCoordinate + (this.coverInitial / 10.0));
+
+    }
+    if (this.coverSide == 'left' || this.coverSide == 'right') {
+      this.cover.setTransform(this.coverCoordinate, 0);
+    } else { // top, bottom
+      this.cover.setTransform(0, this.coverCoordinate);
+    }
+  };
 
   this.getBodyCount = function() {
     return this.bodies.length + this.inactiveBodies.length;
-  }
+  };;
 
   // Establish body information, so that bodies will appear in the zone
   // at their given entryTime
@@ -128,6 +151,8 @@ function Zone(container, zoneManager, player, zoneData) {
     jQuery(this.bodies).trigger("frame", data);
     this.updateTime();
     this.moveActiveBodies();
+    this.updateCover();
+    this.updateCover();
   });
 
   // When the player enters safety, switch to cover view
