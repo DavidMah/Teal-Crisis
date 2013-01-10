@@ -3,9 +3,11 @@
 # the body drawing tool. The output of this script is the file list input
 # for the body drawing tool.
 import os
+import sys
 
 PATH_DIFFERENCE = ".."
-DIRECTORY = os.path.join(PATH_DIFFERENCE, "assets", "images")
+
+DIRECTORY = os.path.join(PATH_DIFFERENCE, "assets", "images", sys.argv[1])
 OUTPUT_FILENAME = os.path.join(PATH_DIFFERENCE, "assets", "information.js")
 
 def add_entry(pathname):
@@ -21,6 +23,7 @@ def crawl(directory, entries):
 
 entries = []
 crawl(DIRECTORY, entries)
+entries.sort()
 
 output =  "imageList = %s;" % str(entries)
 output_file = open(OUTPUT_FILENAME, 'w')

@@ -79,7 +79,7 @@ head.ready(function() {
   function createNewState(subbodies, image) {
     return {
               subbodies: subbodies,
-              time: 5,
+              time: 0.5,
               image: image,
               attackSequence: null
            };
@@ -173,10 +173,12 @@ head.ready(function() {
   // On key press
   jQuery(window).keyup(function(event) {
     if (event.keyCode == 32 || event.keyCode == 13) {
+      console.log(currentBackgroundImage);
       addState(currentSubbodies, currentBackgroundImage);
       resetSubbodies();
       nextBackgroundImage();
       finished.removeAllChildren();
+      currentBackgroundImage = imageList[currentBackgroundImageIndex];
     }
     if (event.keyCode == 13) {
       outputBody(currentStates);

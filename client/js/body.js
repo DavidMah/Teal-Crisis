@@ -10,7 +10,7 @@
 
 function Body(container, player, x, y, bodyData) {
   // Set true to draw circles for subbodies
-  var USING_VISUAL_STUBS = true;
+  var USING_VISUAL_STUBS = false;
   // Length of Animation time upon attacking
   var RECOIL_TIME = 0.5;
   // Time between damage taking
@@ -107,7 +107,9 @@ function Body(container, player, x, y, bodyData) {
 
     if (this.currentState.image !== 'null')
       this.stage.addChild(this.currentState.image);
+
     if (USING_VISUAL_STUBS) {
+      console.log(USING_VISUAL_STUBS);
       var subbodies = this.currentState.subbodies;
       for (var i = 0; i < subbodies.length; i++) {
         var subbody = subbodies[i];
