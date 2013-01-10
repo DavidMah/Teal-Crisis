@@ -8,6 +8,8 @@
 
 var CROSSHAIR_RADIUS = 10;
 var DEATH_TIME = 3;
+var PAIN_TIME = 0.5;
+
 function Player(container) {
   var player = this;
 
@@ -27,6 +29,10 @@ function Player(container) {
     this.deathTimer = 9999;
     this.deathDisplay = createDeathDisplay(new createjs.Container());
     this.stage.addChild(this.deathDisplay.container);
+
+    this.painTimer = -1;
+    this.painDisplay = createPainDisplay(new createjs.Container());
+    this.stage.addChild(this.painDisplay.container);
 
     this.hideDisplay();
   };
@@ -80,6 +86,7 @@ function Player(container) {
     if (this.states.is('open')) {
       debug_log("damage: " + event);
       this.health -= 1;
+      this.runPainPane();
       if (this.health <= 0) {
         this.runDeathPane();
       }
@@ -91,6 +98,7 @@ function Player(container) {
 
   jQuery(this).on("frame", function(data) {
     this.updateDeathTimer();
+    this.updatePainTimer();
   });
 
   // Assign mouse focus information
@@ -182,6 +190,16 @@ function Player(container) {
         jQuery(this.zone_manager).trigger("gameOver", {});
       }
     }
+  };
+
+  this.runPainPane = function() {
+    debug_log("pain timer activated");
+    this.painTimer = PAIN_TIME;
+  }
+
+  this.updatePainTimer = function() {
+    this.painTimer -= FRAME_INTERVAL
+    this.painDisplay.mask.alpha = Math.max(Math.min(0.5, this.painTimer), 0);
   };
 
   // Reduce ammo by one.
@@ -289,6 +307,20 @@ function createDeathDisplay(container) {
     mask: mask,
     message: message,
     countdown: countdown
+  };
+};
+
+function createPainDisplay(container) {
+  var mask = new createjs.Shape();
+  mask.graphics.beginFill('red');
+  mask.graphics.drawRect(0, 0, 800, 600);
+  mask.alpha = 0;
+
+  container.addChild(mask);
+
+  return {
+    container: container,
+    mask: mask,
   };
 };
 

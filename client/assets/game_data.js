@@ -1,7 +1,7 @@
 var gameData = [
   {
     type: "wait",
-    text: "Example Opening Text\n\nShoot to Continue",
+    text: "Nick Crisis!!\n\nClick to Shoot\n\nSpace to Hide/Reload\n\nShoot to Continue",
     font: "20 pt Arial",
     canProceed: true
   },
@@ -1033,6 +1033,12 @@ var gameData = [
             "image":"assets/images/zones/jinroom/small-DSC_5970.png",
             "attackSequence": null
           },
+          {
+            "subbodies": [],
+            "time": 3,
+            "image": null,
+            "attackSequence": null
+          }
         ]
       },
     ]
