@@ -251,19 +251,19 @@ function Player(container) {
 // Create visual objects for displaying player information and returns it
 // in an object. Adds it to the passed in display container
 function createDisplay(display) {
-  var score = (new createjs.Text("Score: 0", "20pt Arial"));
+  var score = (new createjs.Text("Score: 0", "20pt Arial", 'white'));
   score.setTransform(50, 50);
   display.addChild(score);
 
-  var ammo = (new createjs.Text("Hand Gun: 9", "20pt Arial"));
+  var ammo = (new createjs.Text("Hand Gun: 9", "20pt Arial", 'white'));
   ammo.setTransform(50, 500);
   display.addChild(ammo);
 
-  var health = (new createjs.Text("Life: 3", "20pt Arial"));
+  var health = (new createjs.Text("Life: 3", "20pt Arial", 'white'));
   health.setTransform(650, 50);
   display.addChild(health);
 
-  var time = (new createjs.Text("Time: 9999", "20pt Arial"));
+  var time = (new createjs.Text("Time: 9999", "20pt Arial", 'white'));
   time.setTransform(600, 500);
   display.addChild(time);
 
@@ -290,11 +290,11 @@ function createDeathDisplay(container) {
   mask.graphics.drawRect(0, 0, 800, 600);
   mask.alpha = 0;
 
-  var message   = (new createjs.Text("You Died! Shoot to rejoin", "20pt Arial"));
+  var message   = (new createjs.Text("You Died! Shoot to rejoin", "20pt Arial", 'white'));
   message.setTransform(200, 200);
 
 
-  var countdown = (new createjs.Text("---", "35pt Arial"));
+  var countdown = (new createjs.Text("---", "35pt Arial", 'white'));
   countdown.setTransform(350, 300);
 
   container.addChild(mask);

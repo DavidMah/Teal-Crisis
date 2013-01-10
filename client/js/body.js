@@ -28,6 +28,8 @@ function Body(container, player, x, y, bodyData) {
   //       a random probabalistically unique value will be used.
   this.initialize = function(container, player, x, y, bodyData, id) {
     this.stage = container;
+    this.stage.body = this;
+    console.log(this.stage);
     this.x = x;
     this.y = y;
     this.health = bodyData.health;
@@ -184,7 +186,14 @@ function Body(container, player, x, y, bodyData) {
       this.flashDamageTaken();
       debug_log(this.id + "took damage. health: " + this.health);
     }
+    if (this.health == 0) {
+      this.die();
+    }
     return this.health == 0;
+  }
+
+  this.die = function() {
+    this.stage.visible = false;
   }
 
   this.initialize(container, player, x, y, bodyData);

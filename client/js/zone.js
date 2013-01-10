@@ -103,8 +103,11 @@ function Zone(container, zoneManager, player, zoneData) {
   this.setBodyTable = function(bodyData) {
     this.inactiveBodies = [];
     for (var i = 0; i < bodyData.length; i++) {
-      var body = bodyData[i];
-      this.inactiveBodies.push(this.createBody(body.x, body.y, body));
+      var bodyValues = bodyData[i];
+      var body = this.createBody(bodyValues.x, bodyValues.y, bodyValues);
+      this.inactiveBodies.push(body);
+      body.stage.visible = false;
+      this.entityContainer.addChild(body.stage);
     }
     this.inactiveBodies.sort(function(a, b) {
       return b.entryTime - a.entryTime;
@@ -120,7 +123,7 @@ function Zone(container, zoneManager, player, zoneData) {
            && this.inactiveBodies[this.inactiveBodies.length - 1].entryTime <= currentTime) {
       var body = this.inactiveBodies.pop();
       this.bodies.push(body);
-      this.entityContainer.addChild(body.stage);
+      body.stage.visible = true;
     }
   }
 
@@ -168,16 +171,20 @@ function Zone(container, zoneManager, player, zoneData) {
 
   this.updateTime = function() {
     this.remainingTime -= FRAME_INTERVAL;
-    this.player.setTimeVisual(this.remainingTime);
+    if (this.getBodyCount() > 0) {
+      this.player.setTimeVisual(this.remainingTime);
+    }
     if(this.remainingTime <= 0) {
-      jQuery(this.zoneManager).trigger("zoneFinished", {});
+      if (this.getBodyCount() <= 0) {
+        jQuery(this.zoneManager).trigger("zoneFinished", {});
+      } else {
+        jQuery(this.zoneManager).trigger("gameOver", {});
+      }
     }
   }
 
   this.endZoneIfNoMoreEnemies = function() {
-    if (this.getBodyCount() <= 0) {
-      jQuery(this.zoneManager).trigger("zoneFinished", {});
-    }
+    this.remainingTime = Math.min(this.remainingTime, 3);
   }
 
   // Checks if the target X and Y collides with any bodies in this zone
