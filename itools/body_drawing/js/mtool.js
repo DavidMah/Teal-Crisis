@@ -75,13 +75,14 @@ head.ready(function() {
            };
   }
 
+  var attacking = false;
   // Creates a State from default using the given subbodies and image
   function createNewState(subbodies, image) {
     return {
               subbodies: subbodies,
               time: 0.5,
               image: image,
-              attackSequence: null
+              attackSequence: (attacking ? [0.3] : null)
            };
   }
 
@@ -172,12 +173,16 @@ head.ready(function() {
 
   // On key press
   jQuery(window).keyup(function(event) {
+    if (event.keyCode == 66) {
+      attacking = true;
+    }
     if (event.keyCode == 32 || event.keyCode == 13) {
       console.log(currentBackgroundImage);
       addState(currentSubbodies, currentBackgroundImage);
       resetSubbodies();
       nextBackgroundImage();
       finished.removeAllChildren();
+      attacking = false;
       currentBackgroundImage = imageList[currentBackgroundImageIndex];
     }
     if (event.keyCode == 13) {
