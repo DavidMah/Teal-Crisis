@@ -23,7 +23,10 @@ function CinematicZone(container, zoneManager, player, cinematicData) {
     this.sounds = this.prepareSounds(cinematicData.sounds);
 
     var zone = this;
-    this.animation.onAnimationEnd = function() { zone.finishZone(zone) };
+    this.animation.onAnimationEnd = function() {
+      zone.finishZone(zone)
+      this.animation.gotoAndStop("stop");
+    };
 
   };
 
@@ -82,7 +85,6 @@ function CinematicZone(container, zoneManager, player, cinematicData) {
       var volume = (sound.volume !== undefined ? sound.volume : 1);
       createjs.SoundJS.play(sound.file, createjs.SoundJS.INTERRUPT_NONE,
                             0, offset, 0, volume, 0);
-      // createjs.SoundJS.play(sound.file);
     }
 
   };

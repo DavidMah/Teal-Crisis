@@ -230,7 +230,7 @@ function Player(container) {
 
   // Updates visual display for ammo
   this.setAmmoVisual = function() {
-    this.display.ammo.text = "Hand Gun: " + this.ammo;
+    this.display.ammo.text = "Ammo: " + this.ammo;
   };
 
   this.setScoreVisual = function() {
@@ -255,7 +255,7 @@ function createDisplay(display) {
   score.setTransform(50, 50);
   display.addChild(score);
 
-  var ammo = (new createjs.Text("Hand Gun: 9", "20pt Arial", 'white'));
+  var ammo = (new createjs.Text("Ammo: 9", "20pt Arial", 'white'));
   ammo.setTransform(50, 500);
   display.addChild(ammo);
 
