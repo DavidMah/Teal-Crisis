@@ -34,7 +34,6 @@ function ZoneManager(container, player, zoneData) {
     this.currentZoneIndex = 0;
     this.loadZones();
     this.setZone(0);
-    this.currentZone.startZone();
   };
 
   // Preloads all zones from this.zoneData

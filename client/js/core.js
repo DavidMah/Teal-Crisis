@@ -28,7 +28,7 @@ head.js("js/utility.js");
 head.js("js/zone_manager.js");
 
 // Data
-head.js("assets/game_data.js");
+head.js("assets/battle_data.js", "assets/cinematic_data.js", "assets/game_data.js");
 
 head.ready(function() {
 
@@ -74,6 +74,19 @@ head.ready(function() {
   var zoneManager = new ZoneManager(zoneManagerContainer, player, gameData);
 
   player.setZoneManager(zoneManager);
+  stage.visible = false;
+
+  var loading = new createjs.Text("Loading", "35pt Arial");
+  loading.setTransform(300, 250);
+  loading.visible = false;
+  canvas.addChild(loading);
+
+  function start() {
+    stage.visible = true;
+    zoneManager.currentZone.startZone();
+  }
+
+  start();
 
   // When the mouse is pressed, defer to the player for shooting in the zone
   canvas.onMouseDown = function(event) {

@@ -23,9 +23,12 @@ function CinematicZone(container, zoneManager, player, cinematicData) {
     this.sounds = this.prepareSounds(cinematicData.sounds);
 
     var zone = this;
+    debug_log("cin: ");
+    debug_log(cinematicData);
+    debug_log(this.animation);
     this.animation.onAnimationEnd = function() {
       zone.finishZone(zone)
-      this.animation.gotoAndStop("stop");
+      // zone.animation.gotoAndStop("stop");
     };
 
   };

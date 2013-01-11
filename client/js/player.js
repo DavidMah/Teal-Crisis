@@ -9,6 +9,7 @@
 var CROSSHAIR_RADIUS = 10;
 var DEATH_TIME = 3;
 var PAIN_TIME = 0.5;
+var AMMO_QUANTITY = 3;
 
 function Player(container) {
   var player = this;
@@ -40,7 +41,7 @@ function Player(container) {
   // Sets up initial player stats, like full health and 0 points
   this.setDefaultValues = function() {
     this.score  = 0;
-    this.ammo   = 9;
+    this.ammo   = AMMO_QUANTITY;
     this.health = 3;
   }
 
@@ -210,7 +211,7 @@ function Player(container) {
 
   // Restores ammo to maximum capacity
   this.reload = function() {
-    this.ammo = 9;
+    this.ammo = AMMO_QUANTITY;
     this.setAmmoVisual();
   };
 
@@ -255,7 +256,7 @@ function createDisplay(display) {
   score.setTransform(50, 50);
   display.addChild(score);
 
-  var ammo = (new createjs.Text("Ammo: 9", "20pt Arial", 'white'));
+  var ammo = (new createjs.Text("Ammo: " + AMMO_QUANTITY, "20pt Arial", 'white'));
   ammo.setTransform(50, 500);
   display.addChild(ammo);
 
