@@ -26,8 +26,10 @@ function CinematicZone(container, zoneManager, player, cinematicData) {
     debug_log("cin: ");
     debug_log(cinematicData);
     debug_log(this.animation);
+    this.animation.gotoAndStop(0);
     this.animation.onAnimationEnd = function() {
       zone.finishZone(zone)
+      // zone.animation.gotoAndStop(zone.animation.spriteSheet.getNumFrames() - 1);
       // zone.animation.gotoAndStop("stop");
     };
 
@@ -44,9 +46,7 @@ function CinematicZone(container, zoneManager, player, cinematicData) {
   };
 
   // Initializes anything necessary for exit from a zone
-  // In CinematicZone's case, does nothing
   this.endZone = function() {
-    this.animation.stop();
     this.player.states.close();
   };
 

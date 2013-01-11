@@ -95,6 +95,7 @@ function ZoneManager(container, player, zoneData) {
   this.updateFadeDisplay = function() {
     if (this.fading) {
       this.fadeDisplayTimer -= FRAME_INTERVAL;
+      debug_log(this.fadeDisplayTimer);
       var diff = Math.abs(this.fadeDisplayTimer - (FADE_DISPLAY_TIME / 2.0))
       var ratio = 1 - Math.min(diff / (FADE_DISPLAY_TIME / 2.0), 1);
       this.fadeDisplay.container.alpha = ratio
