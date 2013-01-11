@@ -10,6 +10,7 @@ var CROSSHAIR_RADIUS = 10;
 var DEATH_TIME = 3;
 var PAIN_TIME = 0.5;
 var AMMO_QUANTITY = 3;
+var HEALTH_QUANTITY = 99;
 
 function Player(container) {
   var player = this;
@@ -42,7 +43,7 @@ function Player(container) {
   this.setDefaultValues = function() {
     this.score  = 0;
     this.ammo   = AMMO_QUANTITY;
-    this.health = 3;
+    this.health = HEALTH_QUANTITY;
   }
 
   // Possible Player States:
@@ -140,6 +141,7 @@ function Player(container) {
   // Open the player to pain and allow the player to attack
   this.states.onopen = function(eventname, from, to) {
     debug_log("player entered open state");
+    player.reload();
   }
 
   this.states.ondie = function(eventname, from, to) {
@@ -260,7 +262,7 @@ function createDisplay(display) {
   ammo.setTransform(50, 500);
   display.addChild(ammo);
 
-  var health = (new createjs.Text("Life: 3", "20pt Arial", 'white'));
+  var health = (new createjs.Text("Life: " + HEALTH_QUANTITY, "20pt Arial", 'white'));
   health.setTransform(650, 50);
   display.addChild(health);
 

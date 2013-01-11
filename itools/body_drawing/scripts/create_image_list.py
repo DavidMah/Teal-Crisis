@@ -10,8 +10,13 @@ PATH_DIFFERENCE = ".."
 DIRECTORY = os.path.join(PATH_DIFFERENCE, "assets", "images", sys.argv[1])
 OUTPUT_FILENAME = os.path.join(PATH_DIFFERENCE, "assets", "information.js")
 
+def blacklist(pathname):
+    return (".JPG" in pathname or ".jpg" in pathname or "background" in pathname or "cover" in
+            pathname)
+
 def add_entry(pathname):
-    entries.append(pathname[len(PATH_DIFFERENCE) + 1:])
+    if not blacklist(pathname):
+        entries.append(pathname[len(PATH_DIFFERENCE) + 1:])
 
 def crawl(directory, entries):
     for entry in os.listdir(directory):

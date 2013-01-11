@@ -184,7 +184,9 @@ function Zone(container, zoneManager, player, zoneData) {
   }
 
   this.endZoneIfNoMoreEnemies = function() {
-    this.remainingTime = Math.min(this.remainingTime, 3);
+    if (this.getBodyCount() == 0) {
+      this.remainingTime = Math.min(this.remainingTime, 3);
+    }
   }
 
   // Checks if the target X and Y collides with any bodies in this zone

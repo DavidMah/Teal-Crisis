@@ -122,7 +122,10 @@ function ZoneManager(container, player, zoneData) {
   jQuery(this).on("gameOver", function(data) {
     debug_log("zone_manager: game over");
     this.currentZone.endZone();
-    this.setZone(this.zones.length - 1);
+    this.startFade();
+    this.nextZone = function() {
+      this.setZone(this.zones.length - 1);
+    }
   });
 
   // On every frame entry, the zone needs to update its state
