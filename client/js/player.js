@@ -10,7 +10,7 @@ var CROSSHAIR_RADIUS = 10;
 var DEATH_TIME = 3;
 var PAIN_TIME = 0.5;
 var AMMO_QUANTITY = 3;
-var HEALTH_QUANTITY = 99;
+var HEALTH_QUANTITY = 3;
 
 function Player(container) {
   var player = this;

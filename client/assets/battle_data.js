@@ -1571,7 +1571,7 @@ var battleData = {
     cover: "assets/images/zones/dining-room/cover.png",
     coverSide: 'right',
     coverInitial: 400,
-    time: 30,
+    time: 22,
 
     bodies: [
       // Jin 2
@@ -3806,10 +3806,10 @@ var battleData = {
       },
       // Randeep
       {
-        "health": 3,
+        "health": 5,
         "x": 0,
         "y": 0,
-        "entryTime": 14,
+        "entryTime": 8,
         "states": [
           {
             "subbodies": [
@@ -4498,10 +4498,10 @@ var battleData = {
     time: 15,
     bodies: [
            {
-        "health": 3,
+        "health": 5,
         "x": 0,
         "y": 0,
-        "entryTime": 0,
+        "entryTime": 3,
         "states": [
           {
             "subbodies": [
@@ -4770,7 +4770,7 @@ var battleData = {
         ]
       },
       {
-        "health": 3,
+        "health": 5,
         "x": 0,
         "y": 0,
         "entryTime": 0,
@@ -5300,7 +5300,7 @@ var battleData = {
     image: "assets/images/zones/david-room/background.JPG",
     cover: "assets/images/zones/david-room/cover.png",
     coverSide: 'left',
-    coverInitial: 400,
+    coverInitial: -100,
 
     time: 15,
     bodies: [
@@ -6358,7 +6358,7 @@ var battleData = {
     bodies: [
       // Chad
       {
-        "health": 15,
+        "health": 4,
         "x": 0,
         "y": 0,
         "entryTime": 18,
@@ -6840,7 +6840,7 @@ var battleData = {
         ]
       },
       {
-        "health": 4,
+        "health": 6,
         "x": 0,
         "y": 0,
         "entryTime": 2,
@@ -7796,7 +7796,7 @@ var battleData = {
         ]
       },
       {
-        "health": 4,
+        "health": 6,
         "x": 0,
         "y": 0,
         "entryTime": 5,
@@ -8130,7 +8130,7 @@ var battleData = {
         ]
       },
       {
-        "health": 5,
+        "health": 7,
         "x": 0,
         "y": 0,
         "entryTime": 14,

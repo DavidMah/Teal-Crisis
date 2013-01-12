@@ -14,7 +14,7 @@ function Body(container, player, x, y, bodyData) {
   // Length of Animation time upon attacking
   var RECOIL_TIME = 0.5;
   // Time between damage taking
-  var MERCY_TIME = 0.3;
+  var MERCY_TIME = 0.1;
   // Chance that an attack actually deals damage
   var DAMAGE_CHANCE = 0.9;
 

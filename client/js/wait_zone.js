@@ -13,10 +13,15 @@ function WaitZone(container, zoneManager, player, zoneData) {
     this.player = player;
 
     // White backdrop if there is no image
-    var backdrop = new createjs.Shape();
-    backdrop.graphics.beginFill('white')
-    backdrop.graphics.drawRect(0, 0, BACKGROUND_WIDTH, BACKGROUND_HEIGHT);
-    this.stage.addChild(backdrop);
+    if (zoneData.background === undefined) {
+      var backdrop = new createjs.Shape();
+      backdrop.graphics.beginFill('white')
+      backdrop.graphics.drawRect(0, 0, BACKGROUND_WIDTH, BACKGROUND_HEIGHT);
+      this.stage.addChild(backdrop);
+    } else {
+      var background = new createjs.Bitmap(zoneData.background);
+      this.stage.addChild(background);
+    }
 
     this.canProceed = zoneData.canProceed;
     this.addText(zoneData.text, zoneData.font);
@@ -34,7 +39,7 @@ function WaitZone(container, zoneManager, player, zoneData) {
 
   // Draws description text
   this.addText = function(text, font) {
-    var text = new createjs.Text(text, font);
+    var text = new createjs.Text(text, font, 'white');
     text.setTransform(200, 200);
     this.stage.addChild(text);
   };

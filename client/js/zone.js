@@ -79,15 +79,16 @@ function Zone(container, zoneManager, player, zoneData) {
   // this.coverSide
   this.updateCover = function() {
     if (this.inCover) {
-      this.coverCoordinate = Math.max(0, this.coverCoordinate - (this.coverInitial / 10.0));
+      if (this.coverSide == 'right')
+        this.coverCoordinate = Math.max(0, this.coverCoordinate - (this.coverInitial / 5.0));
+      else
+        this.coverCoordinate = Math.min(0, this.coverCoordinate - (this.coverInitial / 5.0));
     } else {
       this.coverCoordinate = Math.min(this.coverInitial, this.coverCoordinate + (this.coverInitial / 10.0));
 
     }
     if (this.coverSide == 'left' || this.coverSide == 'right') {
       this.cover.setTransform(this.coverCoordinate, 0);
-    } else { // top, bottom
-      this.cover.setTransform(0, this.coverCoordinate);
     }
   };
 
@@ -185,7 +186,7 @@ function Zone(container, zoneManager, player, zoneData) {
 
   this.endZoneIfNoMoreEnemies = function() {
     if (this.getBodyCount() == 0) {
-      this.remainingTime = Math.min(this.remainingTime, 3);
+      this.remainingTime = Math.min(this.remainingTime, 1);
     }
   }
 

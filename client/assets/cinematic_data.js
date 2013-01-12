@@ -114,7 +114,8 @@ var cinematicData = {
     },
     sounds: [],
     subtitlesTop: [
-        [11, 13, "GUYS LIKE TO HEAR THAT THEY'RE HOOOT"]
+        [11, 13, "GUYS LIKE TO HEAR THAT THEY'RE HOOOT"],
+        [29, 31, "FRIIICK"]
     ],
     subtitles: [
       [0, 2, 'Ugh I feel terrible. Where is that monkey...'],
