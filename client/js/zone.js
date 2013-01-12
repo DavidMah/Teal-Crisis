@@ -84,7 +84,10 @@ function Zone(container, zoneManager, player, zoneData) {
       else
         this.coverCoordinate = Math.min(0, this.coverCoordinate - (this.coverInitial / 5.0));
     } else {
-      this.coverCoordinate = Math.min(this.coverInitial, this.coverCoordinate + (this.coverInitial / 10.0));
+      if (this.coverSide == 'right')
+        this.coverCoordinate = Math.min(this.coverInitial, this.coverCoordinate + (this.coverInitial / 10.0));
+      else
+        this.coverCoordinate = Math.max(this.coverInitial, this.coverCoordinate + (this.coverInitial / 10.0));
 
     }
     if (this.coverSide == 'left' || this.coverSide == 'right') {

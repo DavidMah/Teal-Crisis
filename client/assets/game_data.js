@@ -6,15 +6,15 @@ var gameData = [
     background: "assets/images/misc/opening.JPG",
     canProceed: true
   },
-  cinematicData.livingRoom,
-  battleData.diningRoom,
-  cinematicData.kitchen,
-  cinematicData.basement,
-  battleData.maxRoom,
-  cinematicData.leaveBasement,
-  cinematicData.upstairs,
-  battleData.davidRoom,
-  cinematicData.davidRoom,
+  // cinematicData.livingRoom,
+  // battleData.diningRoom,
+  // cinematicData.kitchen,
+  // cinematicData.basement,
+  // battleData.maxRoom,
+  // cinematicData.leaveBasement,
+  // cinematicData.upstairs,
+  // battleData.davidRoom,
+  // cinematicData.davidRoom,
   battleData.jinRoom,
   cinematicData.jinRoom,
   // The Normal Game Ending
@@ -32,4 +32,4 @@ var gameData = [
     font: "20 pt Arial",
     background: "assets/images/misc/defeat.JPG"
   }
-]
+];

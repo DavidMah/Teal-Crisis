@@ -5782,7 +5782,7 @@ var battleData = {
             "subbodies": [
               
             ],
-            "time": 4,
+            "time": 3,
             "image": "assets\/images\/zones\/david-room\/martin1\/small-DSC_6448.png",
             "attackSequence": null
           },
@@ -6179,7 +6179,7 @@ var battleData = {
             "subbodies": [
               
             ],
-            "time": 3,
+            "time": 2,
             "image": "assets\/images\/zones\/david-room\/martin2\/small-DSC_6460.png",
             "attackSequence": null
           },
@@ -6353,7 +6353,7 @@ var battleData = {
     coverSide: 'right',
     coverInitial: 400,
 
-    time: 30,
+    time: 35,
 
     bodies: [
       // Chad
