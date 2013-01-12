@@ -96,7 +96,7 @@ head.ready(function() {
   preload = new createjs.PreloadJS()
   preload.onFileLoad =  handleFileLoad;
 
-  var loading = new createjs.Text("Loading", "35pt Arial", 'white');
+  var loading = new createjs.Text("Loading\n\nExpect about a minute", "35pt Arial", 'white');
   loading.setTransform(300, 250);
   canvas.addChild(loading);
 
