@@ -5,14 +5,16 @@ var gameData = [
     font: "20 pt Arial",
     canProceed: true
   },
-  // cinematicData.livingRoom,
-  battleData.diningRoom,
-  // cinematicData.kitchen,
-  // cinematicData.basement,
+  cinematicData.livingRoom,
+  // battleData.diningRoom,
+  cinematicData.kitchen,
+  cinematicData.basement,
   // battleData.maxRoom,
-  // cinematicData.upstairs,
-  battleData.davidRoom,
+  cinematicData.leaveBasement,
+  cinematicData.upstairs,
+  // battleData.davidRoom,
   cinematicData.davidRoom,
+  // battleData.jinRoom,
   cinematicData.jinRoom,
   // The Normal Game Ending
   {

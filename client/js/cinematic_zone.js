@@ -27,8 +27,9 @@ function CinematicZone(container, zoneManager, player, cinematicData) {
     debug_log(cinematicData);
     debug_log(this.animation);
     this.animation.gotoAndStop(0);
-    this.animation.onAnimationEnd = function() {
-      zone.finishZone(zone)
+    this.animation.onAnimationEnd = function(self, anim) {
+      if (anim == 'stop')
+        zone.finishZone(zone)
       // zone.animation.gotoAndStop(zone.animation.spriteSheet.getNumFrames() - 1);
       // zone.animation.gotoAndStop("stop");
     };
