@@ -96,8 +96,8 @@ head.ready(function() {
   preload = new createjs.PreloadJS()
   preload.onFileLoad =  handleFileLoad;
 
-  var loading = new createjs.Text("Loading\n\nExpect about a minute", "35pt Arial", 'white');
-  loading.setTransform(300, 250);
+  var loading = new createjs.Text("         Loading\n\nExpect about a minute", "35pt Arial", 'white');
+  loading.setTransform(190, 250);
   canvas.addChild(loading);
 
   var imageCount = imageList.length;
