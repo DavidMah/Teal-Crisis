@@ -31,6 +31,7 @@ crawl(DIRECTORY, entries)
 entries.sort()
 
 output =  "imageList = %s;" % str(entries)
-output_file = open(OUTPUT_FILENAME, 'w')
-output_file.write(output)
-output_file.close()
+print output
+# output_file = open(OUTPUT_FILENAME, 'w')
+# output_file.write(output)
+# output_file.close()

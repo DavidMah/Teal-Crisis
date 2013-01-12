@@ -6,11 +6,12 @@ var gameData = [
     canProceed: true
   },
   // cinematicData.livingRoom,
-  // battleData.diningRoom,
+  battleData.diningRoom,
   // cinematicData.kitchen,
   // cinematicData.basement,
-  battleData.maxRoom,
-  cinematicData.upstairs,
+  // battleData.maxRoom,
+  // cinematicData.upstairs,
+  battleData.davidRoom,
   cinematicData.davidRoom,
   cinematicData.jinRoom,
   // The Normal Game Ending

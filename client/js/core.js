@@ -28,6 +28,7 @@ head.js("js/utility.js");
 head.js("js/zone_manager.js");
 
 // Data
+head.js("assets/preload_data.js")
 head.js("assets/battle_data.js", "assets/cinematic_data.js", "assets/game_data.js");
 
 head.ready(function() {
@@ -76,17 +77,36 @@ head.ready(function() {
   player.setZoneManager(zoneManager);
   stage.visible = false;
 
-  var loading = new createjs.Text("Loading", "35pt Arial");
-  loading.setTransform(300, 250);
-  loading.visible = false;
-  canvas.addChild(loading);
 
   function start() {
+    debug_log("starting");
     stage.visible = true;
+    loading.visible = false;
     zoneManager.currentZone.startZone();
   }
 
-  start();
+  var loadedCount = 0;
+  function handleFileLoad() {
+    loadedCount += 1;
+    if (loadedCount == imageCount) {
+      start();
+    }
+
+  }
+  preload = new createjs.PreloadJS()
+  preload.onFileLoad =  handleFileLoad;
+
+  var loading = new createjs.Text("Loading", "35pt Arial", 'white');
+  loading.setTransform(300, 250);
+  canvas.addChild(loading);
+
+  var imageCount = imageList.length;
+  while (imageList.length > 0) {
+    var item = imageList.shift();
+    preload.loadFile(item);
+    debug_log("wambo");
+  }
+
 
   // When the mouse is pressed, defer to the player for shooting in the zone
   canvas.onMouseDown = function(event) {
