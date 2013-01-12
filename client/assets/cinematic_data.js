@@ -30,6 +30,18 @@ var cinematicData = {
       }
     },
     sounds: [],
+    subtitlesTop: [
+      [3, 5, "Oh Um Hi Nick, I'm not weirdly stealing your underwear..."],
+      [6, 9, "RUUUUUUUUNNNNNN"]
+      [10, 12, "JINJA CLONE TECHNIQUE GOOO"]
+    ],
+    subtitles: [
+      [0, 3, 'Is someone in my room?'],
+      [4, 6, 'Damnit Jin.. Good thing I brought my gun'],
+      [6.5, 9, 'I can shoot him with my Mouse Clicks'],
+      [9, 11, 'And I can hide behind cover and reload with my Spacebar...']
+    
+    ],
     time: 9999
   },
   kitchen: {
@@ -43,6 +55,9 @@ var cinematicData = {
       },
     },
     sounds: [],
+    subtitles: [
+      [2, 4, 'Damnit Jin!']
+    ],
     time: 9999
 
   },
@@ -68,11 +83,16 @@ var cinematicData = {
       frames: { width: 800, height: 536 },
       animations: {
         play: [0, 16, 'play2', 3],
-        play2: [17, 19, 'stop', 5],
+        play2: [17, 19, 'play3', 5],
+        play3: [17, 19, 'stop', 5],
         stop: [19, 19, false, 3]
       },
     },
     sounds: [],
+    subtitles: [
+      [1, 2, "Hey What do you think you're doing!?!?"],
+      [3, 5, "Uuugh I'm dizzy..."]
+    ],
     time: 9999
 
 
@@ -84,11 +104,26 @@ var cinematicData = {
 
       frames: { width: 800, height: 536 },
       animations: {
-        play: [0, 150, 'stop', 3],
+        play: [0, 63, 'play2', 3],
+        play2: [64, 67, 'play3', 5],
+        play3: [68, 129, 'play4', 4],
+        play4: [130, 131, 'play5', 30],
+        play5: [132, 150, 'stop', 5],
         stop: [150, 150, false, 3]
       },
     },
     sounds: [],
+    subtitlesTop: [
+        [11, 13, "GUYS LIKE TO HEAR THAT THEY'RE HOOOT"]
+    ],
+    subtitles: [
+      [0, 2, 'Ugh I feel terrible. Where is that monkey...'],
+      [4, 5, 'JIIIIIIIIIIIIINNNNNNNNNNNNN'],
+      [10, 11, 'Why is he holding that bread like that'],
+      [11, 12, "Best Housemates, don't care at all bout my underwear"],
+      [23, 26, "Hmm.. It seems that nobody is in David's Room"],
+      [29, 31, "JIIIIIIIIIIIIIINNNNNNNNNNNNNNN"]
+    ],
     time: 9999
 
   },
@@ -100,11 +135,14 @@ images: ['assets/images/cinematics/david-room/001.jpg', 'assets/images/cinematic
 
       frames: { width: 800, height: 536 },
       animations: {
-        play: [0, 36, 'stop', 3],
-        stop: [0, 36, false, 3]
+        play: [0, 25, 'stop', 3],
+        stop: [26, 26, false, 3]
       },
     },
     sounds: [],
+    subtitles: [
+      [3, 5, "I've got him cornered now"]
+    ],
     time: 9999
 
   },
@@ -115,11 +153,22 @@ images: ['assets/images/cinematics/david-room/001.jpg', 'assets/images/cinematic
 
       frames: { width: 800, height: 536 },
       animations: {
-        play: [0, 87, 'stop', 3],
+        play: [0, 84, 'wait', 4],
+        wait: [85, 87, 'stop', 13],
         stop: [87, 87, false, 3]
       },
     },
     sounds: [],
+    subtitlesTop: [
+      [0, 1, "I'm so sorry Nick!"],
+      [1, 2, "I didn't think you'd catch me :("],
+      [2, 4, "I left that underwear in the closet... have it back :'("],
+    ],
+    subtitles: [
+      [8, 11, "David... Why are you wearing my bathrobe....."],
+      [14, 16, "Time to get that boxer shorts back"],
+      [18, 22, "WTF WHEN DID YOU TAKE ALL OF MY UNDERWEAR"]
+    ],
     time: 9999
   }
 }
